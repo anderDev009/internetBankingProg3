@@ -1,7 +1,12 @@
+using InternetBanking.Infrastructure.Identity;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Extension Method de servicio de Identity
+builder.Services.AddIdentityInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
