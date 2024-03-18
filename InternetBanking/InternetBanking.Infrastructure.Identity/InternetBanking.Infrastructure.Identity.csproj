@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Context\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\InternetBanking.Core.Application\InternetBanking.Core.Application.csproj" />
   </ItemGroup>
 
