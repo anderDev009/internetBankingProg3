@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InternetBanking.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -96,14 +96,12 @@ namespace InternetBanking.Infrastructure.Persistence.Migrations
                         name: "FK_PayExpress_Account_AccountNumber",
                         column: x => x.AccountNumber,
                         principalTable: "Account",
-                        principalColumn: "Code",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Code");
                     table.ForeignKey(
                         name: "FK_PayExpress_Account_IdAccountPaid",
                         column: x => x.IdAccountPaid,
                         principalTable: "Account",
-                        principalColumn: "Code",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Code");
                 });
 
             migrationBuilder.CreateTable(

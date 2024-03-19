@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InternetBanking.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(InternetBankingContext))]
-    [Migration("20240318232717_initial")]
-    partial class initial
+    [Migration("20240319131005_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -276,13 +276,13 @@ namespace InternetBanking.Infrastructure.Persistence.Migrations
                     b.HasOne("InternetBanking.Core.Domain.Entities.Account", "AccountPaymentMade")
                         .WithMany("PaymentsMade")
                         .HasForeignKey("AccountNumber")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("InternetBanking.Core.Domain.Entities.Account", "AccountPaid")
                         .WithMany("PaymentsOtherAccount")
                         .HasForeignKey("IdAccountPaid")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("AccountPaid");
