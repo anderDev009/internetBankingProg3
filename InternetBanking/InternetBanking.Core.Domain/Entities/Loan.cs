@@ -11,7 +11,9 @@ namespace InternetBanking.Core.Domain.Entities
     public class Loan : BaseEntity
     {
         public int IdUser { get; set; } 
+        //Prestamo que tomo el usuario
         public decimal LoanUser {  get; set; }
+        //balance pendiente
         public decimal BalanceLoan { get; set; }
 
         public List<LoanPay>? Payments {  get; set; }

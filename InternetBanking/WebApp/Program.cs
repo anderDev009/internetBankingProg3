@@ -1,8 +1,10 @@
+using InternetBanking.Infrastructure.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+//dependencias de la capa de infraestructura
+builder.Services.AddInfrastructureLayer(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
