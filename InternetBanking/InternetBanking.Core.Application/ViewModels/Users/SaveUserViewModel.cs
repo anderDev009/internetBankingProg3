@@ -1,5 +1,6 @@
 ﻿
 
+using InternetBanking.Core.Application.ViewModels.BankAccount;
 using System.ComponentModel.DataAnnotations;
 
 namespace InternetBanking.Core.Application.ViewModels.Users
@@ -38,5 +39,7 @@ namespace InternetBanking.Core.Application.ViewModels.Users
         public bool HasError { get; set; }
         public string Error { get; set; }
 
+        //SaveViewModel para la cuenta de ahorros en caso de ser cliente
+        public SaveBankAccountViewModel? BankAccount { get; set; }
     }
 }

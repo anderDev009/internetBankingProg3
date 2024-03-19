@@ -10,17 +10,20 @@ using InternetBanking.Core.Application.Dtos.Email;
 
 namespace InternetBanking.Infrastructure.Identity.Services
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailServices _emailService;
-
-        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailServices emailService)
+        //inyeccion del servicio de bank account 
+        private readonly IBankAccountService _bankAccountService;
+        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailServices emailService, IBankAccountService bankAccountService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
+            //inyeccion del servicio de bank account 
+            _bankAccountService = bankAccountService;
         }
 
         //metodo de login
@@ -64,9 +67,9 @@ namespace InternetBanking.Infrastructure.Identity.Services
         {
             SaveUserViewModel userVM = new SaveUserViewModel();
             //valida si el user es cliente que el monto inicial no sea menor que 0
-            if(vm.TypeUser == "cliente")
+            if (vm.TypeUser == "cliente")
             {
-                if (vm.Amount < 0)
+                if (vm.BankAccount.InitialAmmount < 0)
                 {
                     userVM.HasError = true;
                     userVM.Error = "El monto no puede ser negativo";
@@ -120,17 +123,38 @@ namespace InternetBanking.Infrastructure.Identity.Services
                 }
                 if (vm.TypeUser == "Cliente")
                 {
-                   //Aqui va logica para crear cliente con Cuenta
+                    //Aqui va logica para crear cliente con Cuenta
                     await _userManager.AddToRoleAsync(ApUser, Roles.Client.ToString());
+                    //
+                    vm.BankAccount.IdUser = ApUser.Id;
+                    await _bankAccountService.SaveAsync(vm.BankAccount);
                 }
                 await _emailService.sendAsync(new EmailRequest()
                 {
                     To = ApUser.Email,
                     Body = $"<h4> Saludos Usted ha sido registrado en el sistema bancario",
-                    Subject = $"<h4>Welcome to sistem Bank App </h4>"
+                    Subject = $"<h4>Welcome to system Bank App </h4>"
                 });
             }
-                return userVM;
+            return userVM;
+        }
+
+        //metodo para buscar un usuario y que te devuelva informacion basica
+        public async Task<UserSearchResponse> SearchUser(UserSearchRequest request)
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(request.CodeUser);
+            if(user == null)
+            {
+                return new UserSearchResponse { HasError = true };
+            }
+            //configurar mapping 
+            return new UserSearchResponse
+            {
+                IdUser = user.Id,
+                LastName = user.LastName,
+                Name = user.FirstName,
+                HasError = false
+            };
         }
     }
 }
