@@ -162,6 +162,17 @@ namespace InternetBanking.Infrastructure.Identity.Services
             }
         }
 
+        //metodo para desactivar usuario
+        public async Task DesactiveUser(string id)
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                user.EmailConfirmed = false;
+                await _userManager.UpdateAsync(user);
+            }
+        }
+
         //metodo para buscar un usuario y que te devuelva informacion basica
         public async Task<UserSearchResponse> SearchUser(UserSearchRequest request)
         {
