@@ -29,7 +29,7 @@ namespace InternetBanking.Core.Application.Services
             return _mapper.Map<SaveViewModel>(entity);
         }
 
-        public async Task RemoveAsync(int id)
+        public virtual async Task RemoveAsync(int id)
         {
             var entity = await _repository.GetByIdAsync(id);
             await _repository.RemoveAsync(entity);
