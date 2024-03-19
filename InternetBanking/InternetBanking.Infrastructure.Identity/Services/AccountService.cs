@@ -151,6 +151,16 @@ namespace InternetBanking.Infrastructure.Identity.Services
             }
             return userVM;
         }
+        //metodo para activar usuario
+        public async Task ActiveUser(string id)
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                user.EmailConfirmed = true;
+                await _userManager.UpdateAsync(user);
+            }
+        }
 
         //metodo para buscar un usuario y que te devuelva informacion basica
         public async Task<UserSearchResponse> SearchUser(UserSearchRequest request)
