@@ -273,13 +273,13 @@ namespace InternetBanking.Infrastructure.Persistence.Migrations
                     b.HasOne("InternetBanking.Core.Domain.Entities.Account", "AccountPaymentMade")
                         .WithMany("PaymentsMade")
                         .HasForeignKey("AccountNumber")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("InternetBanking.Core.Domain.Entities.Account", "AccountPaid")
                         .WithMany("PaymentsOtherAccount")
                         .HasForeignKey("IdAccountPaid")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("AccountPaid");

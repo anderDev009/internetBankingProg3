@@ -51,12 +51,12 @@ namespace InternetBanking.Infrastructure.Persistence.Context
             modelBuilder.Entity<Account>()
                 .HasMany(a => a.PaymentsMade)
                 .WithOne(p => p.AccountPaymentMade)
-                .HasForeignKey(p => p.AccountNumber);
+                .HasForeignKey(p => p.AccountNumber).OnDelete(DeleteBehavior.NoAction);
             //cuenta  que pago
             modelBuilder.Entity<Account>()
                .HasMany(a => a.PaymentsOtherAccount)
                .WithOne(p => p.AccountPaid)
-               .HasForeignKey(p => p.IdAccountPaid);
+               .HasForeignKey(p => p.IdAccountPaid).OnDelete(DeleteBehavior.NoAction);
             #endregion
             #region Card
             modelBuilder.Entity<Card>()
