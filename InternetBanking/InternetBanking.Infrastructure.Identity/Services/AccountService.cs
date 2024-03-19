@@ -15,6 +15,7 @@ namespace InternetBanking.Infrastructure.Identity.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailServices _emailService;
+
         //inyeccion del servicio de bank account 
         private readonly IBankAccountService _bankAccountService;
         public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailServices emailService, IBankAccountService bankAccountService)
@@ -61,6 +62,11 @@ namespace InternetBanking.Infrastructure.Identity.Services
             response.Roles = rolesList.ToList();
             response.IsVerified = user.EmailConfirmed;
             return response;
+        }
+        //Metodo de LogOut
+        public async Task SignOutAsync()
+        {
+            await _signInManager.SignOutAsync();
         }
 
         public async Task<SaveUserViewModel> RegisterAsync(SaveUserViewModel vm)
@@ -135,6 +141,13 @@ namespace InternetBanking.Infrastructure.Identity.Services
                     Body = $"<h4> Saludos Usted ha sido registrado en el sistema bancario",
                     Subject = $"<h4>Welcome to system Bank App </h4>"
                 });
+            }
+            else
+            {
+                //si ocurre un error
+                vm.HasError = false;
+                vm.Error = "A ocurrido un error, por favor registre el usuario nuevamente";
+                return vm;
             }
             return userVM;
         }
