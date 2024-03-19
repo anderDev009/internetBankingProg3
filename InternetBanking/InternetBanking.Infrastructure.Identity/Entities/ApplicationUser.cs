@@ -8,7 +8,7 @@ namespace InternetBanking.Infrastructure.Identity.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        // Campo custom para la Identificacion de card
+        // Campo custom para la Identificacion
         public string CardIdentification { get; set; }
     }
 }
