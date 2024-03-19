@@ -5,7 +5,7 @@ namespace InternetBanking.Core.Domain.Entities
 {
     public class Card : BaseEntity
     {
-        public int IdUser {  get; set; }
+        public string IdUser {  get; set; }
         public decimal Limit { get; set; }
         public decimal AmountAvailable { get; set; }
         
