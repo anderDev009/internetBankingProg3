@@ -1,5 +1,6 @@
 using InternetBanking.Infrastructure.Persistence;
 using InternetBanking.Infrastructure.Identity;
+using InternetBanking.Infrastructure.Shared;
 using InternetBanking.Infrastructure.Identity.Entities;
 using InternetBanking.Infrastructure.Identity.Seeds;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddInfrastructureLayer(builder.Configuration);
 //Identity
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
+//Shaared
+builder.Services.AddSharedInfrastructure(builder.Configuration);
 var app = builder.Build();
 
 //Metodo para correr los Seeds
