@@ -122,7 +122,7 @@ namespace InternetBanking.Infrastructure.Identity.Services
 
             if (status.Succeeded)
             {
-                vm.HasError = false;
+                userVM.HasError = false;
                 if (vm.TypeUser == "Administrador")
                 {
                     await _userManager.AddToRoleAsync(ApUser, Roles.Administrator.ToString());
@@ -132,8 +132,8 @@ namespace InternetBanking.Infrastructure.Identity.Services
                     //Aqui va logica para crear cliente con Cuenta
                     await _userManager.AddToRoleAsync(ApUser, Roles.Client.ToString());
                     //
-                    vm.BankAccount.IdUser = ApUser.Id;
-                    await _bankAccountService.SaveAsync(vm.BankAccount);
+                    userVM.BankAccount.IdUser = ApUser.Id;
+                    await _bankAccountService.SaveAsync(userVM.BankAccount);
                 }
                 await _emailService.sendAsync(new EmailRequest()
                 {
@@ -145,12 +145,113 @@ namespace InternetBanking.Infrastructure.Identity.Services
             else
             {
                 //si ocurre un error
-                vm.HasError = false;
-                vm.Error = "A ocurrido un error, por favor registre el usuario nuevamente";
-                return vm;
+                userVM.HasError = false;
+                userVM.Error = "A ocurrido un error, por favor registre el usuario nuevamente";
+                return userVM;
             }
             return userVM;
         }
+
+
+        //metodo para actualizar un user
+        public async Task<SaveUserViewModel> UpdateUserAsync(SaveUserViewModel vm)
+        {
+            ApplicationUser AppUser = await _userManager.FindByIdAsync(vm.Id);
+            SaveUserViewModel userVM = new SaveUserViewModel();
+
+            //valida si el user es cliente que el monto inicial no sea menor que 0
+            if (vm.TypeUser == "cliente")
+            {
+                if (vm.BankAccount.InitialAmmount != 0)
+                {
+                    //metodo para sumar el dinero al balance que tiene en la cuenta principal
+                }
+            }
+
+            //valida el username sea cambiado
+            if (vm.Username != AppUser.UserName)
+            {
+                var verifUsername = await _userManager.FindByNameAsync(vm.Username);
+                if (verifUsername != null)
+                {
+                    userVM.HasError = true;
+                    userVM.Error = "Este usuario ya esta en uso";
+                    return userVM;
+                }
+
+            }
+            //valida si son iguales las contraseñas
+            if (vm.Password != vm.ConfirmPassword)
+            {
+                userVM.HasError = true;
+                userVM.Error = "Las contraseñas nuevas no coinciden";
+                return userVM;
+            }
+            //Si ingresa una contraseña tiene que poner la que tiene actualmente
+            if (vm.Password != null)
+            {
+                if (vm.currentPassword == null)
+                {
+                    userVM.HasError = true;
+                    userVM.Error = "Tiene que escribir la contraseña actual si quiere cambiar la contraseña";
+                    return userVM;
+                }
+            }
+            //valida la cedula se diferente que la que ya tiene
+            if (vm.CardIdentificantion != AppUser.CardIdentification)
+            {
+                //valida que la cedula sea unica
+                var user = await _userManager.Users.ToListAsync();
+                var verifyCedula = user.FirstOrDefault(user => user.CardIdentification == vm.CardIdentificantion);
+                if (verifyCedula != null)
+                {
+                    userVM.HasError = true;
+                    userVM.Error = $"Esta cedula ya esta en uso";
+                    return userVM;
+                }
+            }
+            
+            //valida que el email sea cambiado
+            if(vm.Email != AppUser.Email)
+            {
+                //valida el email
+                var verifyEmail = await _userManager.FindByEmailAsync(vm.Email);
+                if (verifyEmail != null)
+                {
+                    userVM.HasError = true;
+                    userVM.Error = $"Este email {userVM.Email} ya esta en uso";
+                    return userVM;
+                }
+            }
+
+
+            AppUser.FirstName = vm.FirstName;
+            AppUser.LastName = vm.LastName;
+            AppUser.Email = vm.Email;
+            AppUser.CardIdentification = vm.CardIdentificantion;
+            AppUser.EmailConfirmed = true;
+            
+
+            if(vm.Password != null)
+            {
+                var status = await _userManager.ChangePasswordAsync(AppUser, vm.currentPassword, vm.Password);
+                if (status.Succeeded)
+                {
+                    userVM.HasError = false;
+                }
+                else
+                {
+                    //si ocurre un error
+                    vm.HasError = false;
+                    vm.Error = "A ocurrido un error, por favor edite el usuario nuevamente";
+                    return vm;
+                }
+            }
+
+            
+            return userVM;
+        }
+
         //metodo para activar usuario
         public async Task ActiveUser(string id)
         {

@@ -39,6 +39,7 @@ namespace InternetBanking.Core.Application.ViewModels.Users
         public bool HasError { get; set; }
         public string Error { get; set; }
 
+        public string? currentPassword { get; set; }
         //SaveViewModel para la cuenta de ahorros en caso de ser cliente
         public SaveBankAccountViewModel? BankAccount { get; set; }
     }
