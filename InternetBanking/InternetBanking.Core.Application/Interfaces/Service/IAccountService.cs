@@ -6,7 +6,11 @@ namespace InternetBanking.Infrastructure.Identity.Services
     public interface IAccountService
     {
         Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
+        Task SignOutAsync();
         Task<SaveUserViewModel> RegisterAsync(SaveUserViewModel vm);
+        Task<SaveUserViewModel> UpdateUserAsync(SaveUserViewModel vm);
+        Task ActiveUser(string id);
+        Task DesactiveUser(string id);
         Task<UserSearchResponse> SearchUser(UserSearchRequest request);
     }
 }
