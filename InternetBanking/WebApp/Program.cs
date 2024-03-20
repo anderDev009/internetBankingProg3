@@ -9,7 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//Application
 builder.Services.AddApplicationLayer();
+//persistense
 builder.Services.AddInfrastructureLayer(builder.Configuration);
 //Identity
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
