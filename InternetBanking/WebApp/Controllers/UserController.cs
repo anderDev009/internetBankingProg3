@@ -55,7 +55,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Activate(string Id)
         {
             await _userService.ActiveUser(Id);
-            return View();
+            return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
 
         //metodo desactivar
@@ -63,7 +63,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Desactivated(string Id)
         {
             await _userService.DesactiveUser(Id);
-            return View();
+            return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
 
         //crear usuario
