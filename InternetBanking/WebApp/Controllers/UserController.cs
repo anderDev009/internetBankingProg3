@@ -1,7 +1,7 @@
 ﻿using InternetBanking.Core.Application.Dtos.Account;
 using InternetBanking.Core.Application.Interfaces.Service;
 using InternetBanking.Core.Application.ViewModels.Users;
-using Microsoft.AspNetCore.Http;
+using InternetBanking.Core.Application.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers
@@ -39,6 +39,30 @@ namespace WebApp.Controllers
                 return View(login);
 
             }
+        }
+
+        //LogOut metodo
+        public async Task<IActionResult> LogOut()
+        {
+            await _userService.SignOutAsync();
+            HttpContext.Session.Remove("user_session");
+            return RedirectToRoute(new { controller = "User", action = "Index" });
+        }
+
+        //metodo activar
+
+        public async Task<IActionResult> Activate(string Id)
+        {
+            await _userService.ActiveUser(Id);
+            return View();
+        }
+
+        //metodo desactivar
+
+        public async Task<IActionResult> Desactivated(string Id)
+        {
+            await _userService.DesactiveUser(Id);
+            return View();
         }
     }
 }
