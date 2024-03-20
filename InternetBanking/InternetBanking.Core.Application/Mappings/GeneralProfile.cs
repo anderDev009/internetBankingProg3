@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using InternetBanking.Core.Application.Dtos.Account;
 using InternetBanking.Core.Application.Services;
 using InternetBanking.Core.Application.ViewModels.BankAccount;
 using InternetBanking.Core.Application.ViewModels.Beneficiary;
 using InternetBanking.Core.Application.ViewModels.Card;
 using InternetBanking.Core.Application.ViewModels.Lean;
+using InternetBanking.Core.Application.ViewModels.Users;
 using InternetBanking.Core.Domain.Entities;
 using System.ComponentModel.Design;
 
@@ -44,6 +46,12 @@ namespace InternetBanking.Core.Application.Mappings
             CreateMap<Beneficiary, SaveBeneficiaryViewModel>()
                 .ReverseMap()
                 .ForMember(x => x.accountBeneficiary, opt => opt.Ignore());
+            #endregion
+            #region User
+            CreateMap<AuthenticationRequest, LoginViewModel>()
+                .ForMember(x => x.Error, opt => opt.Ignore())
+                .ForMember(x => x.HasError, opt => opt.Ignore())
+                .ReverseMap();
             #endregion
         }
     }
