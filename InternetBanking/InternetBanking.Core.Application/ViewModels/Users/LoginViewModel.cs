@@ -10,7 +10,7 @@ namespace InternetBanking.Core.Application.ViewModels.Users
 
         [Required(ErrorMessage = "Debe colocar una contraseña")]
         public string Password { get; set; }
-        public bool HasError { get; set; }
-        public string Error { get; set; }
+        public  bool? HasError { get; set; }
+        public string? Error { get; set; }
     }
 }
