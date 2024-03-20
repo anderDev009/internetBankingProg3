@@ -251,6 +251,50 @@ namespace InternetBanking.Infrastructure.Identity.Services
             
             return userVM;
         }
+        //Metodo para obtener todos los administradores
+        public async Task<List<SaveUserViewModel>> GetAllUserAdminAsync()
+        {
+            var userList = await _userManager.GetUsersInRoleAsync("Administrator");
+            List<SaveUserViewModel> vm = new();
+            if (userList != null)
+            {
+                foreach (var user in userList)
+                {
+                    vm.Add(new SaveUserViewModel()
+                    {
+                        Id = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        CardIdentificantion = user.CardIdentification,
+                        Email = user.Email,
+                        Username = user.UserName
+                    });
+                }
+            }
+            return vm;
+        }
+
+        public async Task<List<SaveUserViewModel>> GetAllUserClientAsync()
+        {
+            var userList = await _userManager.GetUsersInRoleAsync("Client");
+            List<SaveUserViewModel> vm = new();
+            if (userList != null)
+            {
+                foreach (var user in userList)
+                {
+                    vm.Add(new SaveUserViewModel()
+                    {
+                        Id = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        CardIdentificantion = user.CardIdentification,
+                        Email = user.Email,
+                        Username = user.UserName
+                    });
+                }
+            }
+            return vm;
+        }
 
         //metodo para activar usuario
         public async Task ActiveUser(string id)
