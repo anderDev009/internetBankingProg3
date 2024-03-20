@@ -12,5 +12,6 @@ namespace InternetBanking.Core.Application.Interfaces.Service
                                                         SaveBankAccountViewModel
                                                        ,Account>
     {
+        SaveBankAccountViewModel CreateNewBank(string IdUser, decimal InitialAmmount);
     }
 }

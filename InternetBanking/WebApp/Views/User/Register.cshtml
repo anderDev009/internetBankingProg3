@@ -88,12 +88,11 @@
                                     </div>
 
                                     <div class="form-outline form-white mb-4" id="montoInicialDiv" style="display: none;">
-                                        <label asp-for="BankAccount.InitialAmmount" class="form-label">Monto inicial: </label>
-                                        <input asp-for="BankAccount.InitialAmmount" class="form-control" />
-                                        <span asp-validation-for="BankAccount.InitialAmmount" class="text-danger"></span>
+                                        <label asp-for="InitialAmmount" class="form-label">Monto inicial: </label>
+                                        <input asp-for="InitialAmmount" class="form-control" />
+                                        <span asp-validation-for="InitialAmmount" class="text-danger"></span>
                                     </div>
                                     <input type="hidden" asp-for="Id" />
-                                    <input type="hidden" asp-for="BankAccount.Code" />
 
                                     <button class="btn btn-outline-light btn-lg px-5" type="submit">Registro</button>
                                 </form>

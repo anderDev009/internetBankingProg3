@@ -6,6 +6,7 @@ using InternetBanking.Core.Application.ViewModels.Users;
 using Microsoft.EntityFrameworkCore;
 using InternetBanking.Core.Application.Enums;
 using InternetBanking.Core.Application.Dtos.Email;
+using InternetBanking.Core.Application.ViewModels.BankAccount;
 
 
 namespace InternetBanking.Infrastructure.Identity.Services
@@ -75,7 +76,7 @@ namespace InternetBanking.Infrastructure.Identity.Services
             //valida si el user es cliente que el monto inicial no sea menor que 0
             if (vm.TypeUser == "cliente")
             {
-                if (vm.BankAccount.InitialAmmount < 0)
+                if (vm.InitialAmmount < 0)
                 {
                     userVM.HasError = true;
                     userVM.Error = "El monto no puede ser negativo";
@@ -133,10 +134,11 @@ namespace InternetBanking.Infrastructure.Identity.Services
                     await _userManager.AddToRoleAsync(ApUser, Roles.Client.ToString());
 
                     //Aqui va logica para crear cliente con Cuenta
-                    //agrega un objeto de bank a la propiedad de user
-                    userVM.BankAccount = new();
-                    userVM.BankAccount.IdUser =  _userManager.Users.FirstOrDefaultAsync(a => a.Email == vm.Email).ToString();
-                    await _bankAccountService.SaveAsync(userVM.BankAccount);
+                    //crea el objeto con los datos
+                    //retorna el objeto con la cuenta como main, los el initialAmmount y UserId
+                    SaveBankAccountViewModel bank = _bankAccountService.CreateNewBank(ApUser.Id, vm.InitialAmmount);
+                    //Guarda la cuenta
+                    await _bankAccountService.SaveAsync(bank);
                 }
                 await _emailService.sendAsync(new EmailRequest()
                 {
@@ -165,7 +167,7 @@ namespace InternetBanking.Infrastructure.Identity.Services
             //valida si el user es cliente que el monto inicial no sea menor que 0
             if (vm.TypeUser == "cliente")
             {
-                if (vm.BankAccount.InitialAmmount != 0)
+                if (vm.InitialAmmount != 0)
                 {
                     //metodo para sumar el dinero al balance que tiene en la cuenta principal
                 }

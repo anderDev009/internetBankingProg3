@@ -71,5 +71,17 @@ namespace InternetBanking.Core.Application.Services
             }
             await _bankAccountRepository.RemoveAsync(account);
         }
+
+
+        //Metodo propio de creacion de objeto para cuando se vaya a crear un usuario con cuenta
+        //Este metodo retorna siempre la cuenta cono main
+        public SaveBankAccountViewModel CreateNewBank(string IdUser, decimal InitialAmmount)
+        {
+            SaveBankAccountViewModel bank = new SaveBankAccountViewModel();
+            bank.IdUser = IdUser;
+            bank.InitialAmmount = InitialAmmount;
+            bank.IsMainAccount = true;
+            return bank;
+        }
     }
 }
