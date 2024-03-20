@@ -1,6 +1,7 @@
 ﻿using InternetBanking.Core.Application.Dtos.Account;
 using InternetBanking.Core.Application.Interfaces.Service;
 using InternetBanking.Core.Application.ViewModels.Users;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers
@@ -28,7 +29,7 @@ namespace WebApp.Controllers
             AuthenticationResponse response = await _userService.LoginAsync(login);
             if(response != null && response.HasError != true)
             {
-                //se añade a la sesion 
+                HttpContext.Session.Set<AuthenticationResponse>("user", response);
                 return RedirectToRoute(new { controller = "Home", action = "Index" });
             }
             else

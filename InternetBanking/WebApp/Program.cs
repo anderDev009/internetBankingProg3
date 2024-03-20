@@ -6,7 +6,7 @@ using InternetBanking.Infrastructure.Identity.Seeds;
 using Microsoft.AspNetCore.Identity;
 using InternetBanking.Core.Application;
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddSession();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 //Application
@@ -19,7 +19,8 @@ builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddSharedInfrastructure(builder.Configuration);
 
 //Añadir sesiones
-builder.Services.AddSession();
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 var app = builder.Build();
 
 //Metodo para correr los Seeds
