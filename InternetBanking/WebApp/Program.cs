@@ -17,6 +17,9 @@ builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
 //Shaared
 builder.Services.AddSharedInfrastructure(builder.Configuration);
+
+//Añadir sesiones
+builder.Services.AddSession();
 var app = builder.Build();
 
 //Metodo para correr los Seeds
@@ -45,6 +48,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+//usa sesiones
+app.UseSession();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
