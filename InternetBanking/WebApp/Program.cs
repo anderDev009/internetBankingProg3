@@ -4,10 +4,12 @@ using InternetBanking.Infrastructure.Shared;
 using InternetBanking.Infrastructure.Identity.Entities;
 using InternetBanking.Infrastructure.Identity.Seeds;
 using Microsoft.AspNetCore.Identity;
+using InternetBanking.Core.Application;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer(builder.Configuration);
 //Identity
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
