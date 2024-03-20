@@ -3,6 +3,7 @@ using InternetBanking.Core.Application.Interfaces.Service;
 using InternetBanking.Core.Application.ViewModels.Users;
 using InternetBanking.Core.Application.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp.Controllers
 {
@@ -63,6 +64,33 @@ namespace WebApp.Controllers
         {
             await _userService.DesactiveUser(Id);
             return View();
+        }
+
+        //crear usuario
+        public async Task<IActionResult> Register()
+        {
+            return View(new SaveUserViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(SaveUserViewModel vm)
+        {
+            if (!ModelState.IsValid && vm.Id != null)
+            {
+                return View(vm);
+            }
+            SaveUserViewModel response = await _userService.RegisterAsync(vm);
+            if (response != null && response.HasError != true)
+            {
+                return RedirectToRoute(new { controller = "Home", action = "Index" });
+            }
+            else
+            {
+                vm.HasError = response.HasError;
+                vm.Error = response.Error;
+                return View(vm);
+
+            }
         }
     }
 }

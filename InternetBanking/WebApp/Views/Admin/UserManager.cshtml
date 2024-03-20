@@ -1,0 +1,43 @@
+﻿﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<body class="" style="background-color:#FAFAFA;">
+    <div class="container mt-5 ">
+        <div class="row mb-3">
+
+            <div class="col-3 offset-9">
+                <a asp-controller="User" asp-action="Register" class="btn btn-danger">Agregar nuevo Usuario</a>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Tipo de usuario</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>Mark@hotmail.com</td>
+                        <td>Mark02</td>
+                        <td>Asistente</td>
+                        <td>
+                            <a asp-controller="Users" asp-action="#" asp-route-id="#" class="btn btn-outline-danger">Eliminar</a>
+                            <a asp-controller="Users" asp-action="Edit" asp-route-id="#" class="btn btn-outline-success">Editar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</body>

@@ -129,10 +129,13 @@ namespace InternetBanking.Infrastructure.Identity.Services
                 }
                 if (vm.TypeUser == "Cliente")
                 {
-                    //Aqui va logica para crear cliente con Cuenta
+                    //le pone el roll
                     await _userManager.AddToRoleAsync(ApUser, Roles.Client.ToString());
-                    //
-                    userVM.BankAccount.IdUser = ApUser.Id;
+
+                    //Aqui va logica para crear cliente con Cuenta
+                    //agrega un objeto de bank a la propiedad de user
+                    userVM.BankAccount = new();
+                    userVM.BankAccount.IdUser =  _userManager.Users.FirstOrDefaultAsync(a => a.Email == vm.Email).ToString();
                     await _bankAccountService.SaveAsync(userVM.BankAccount);
                 }
                 await _emailService.sendAsync(new EmailRequest()
