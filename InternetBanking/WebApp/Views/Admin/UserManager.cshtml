@@ -1,11 +1,15 @@
-﻿﻿@{
-    ViewData["Title"] = "Index";
+﻿﻿@using InternetBanking.Core.Application.ViewModels.Users;
+@model List<UserViewModel>;
+@{
+    ViewData["Title"] = "Login Page";
 }
 
 <body class="" style="background-color:#FAFAFA;">
-    <div class="container mt-5 ">
+    <div class="container mt-5">
         <div class="row mb-3">
-
+            <div class="col-12">
+                <h2 class="text-center mb-4">Lista de Usuarios</h2> 
+            </div>
             <div class="col-3 offset-9">
                 <a asp-controller="User" asp-action="Register" class="btn btn-danger">Agregar nuevo Usuario</a>
             </div>
@@ -16,25 +20,70 @@
                         <th scope="col">#</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Apellido</th>
-                        <th scope="col">Correo</th>
+                        <th scope="col">Cedula</th>
                         <th scope="col">Usuario</th>
-                        <th scope="col">Tipo de usuario</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
+                    @{
+                        List<UserViewModel> List = ViewBag.ListClient as List<UserViewModel>;
+                    }
+                    @if(List != null)
+                    {
+                        @foreach (var listClient in List)
+                        {
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>@listClient.FirstName</td>
+                                <td>@listClient.LastName</td>
+                                <td>@listClient.CardIdentificantion</td>
+                                <td>@listClient.UserName</td>
+                                <td>
+                                    <a asp-controller="Users" asp-action="#" asp-route-id="#" class="btn btn-outline-danger">Eliminar</a>
+                                    <a asp-controller="Users" asp-action="Edit" asp-route-id="#" class="btn btn-outline-success">Editar</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <br />
+            <div class="col-12">
+                <h2 class="text-center mb-4">Lista de Admins</h2>
+            </div>
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>Mark@hotmail.com</td>
-                        <td>Mark02</td>
-                        <td>Asistente</td>
-                        <td>
-                            <a asp-controller="Users" asp-action="#" asp-route-id="#" class="btn btn-outline-danger">Eliminar</a>
-                            <a asp-controller="Users" asp-action="Edit" asp-route-id="#" class="btn btn-outline-success">Editar</a>
-                        </td>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Cedula</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col"></th>
                     </tr>
+                </thead>
+                <tbody>
+                    @{
+                        List<UserViewModel> ListA = ViewBag.ListAdmin as List<UserViewModel>;
+                    }
+                    @if (List != null)
+                    {
+                        @foreach (var listClient in ListA)
+                        {
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>@listClient.FirstName</td>
+                                <td>@listClient.LastName</td>
+                                <td>@listClient.CardIdentificantion</td>
+                                <td>@listClient.UserName</td>
+                                <td>
+                                    <a asp-controller="Users" asp-action="#" asp-route-id="#" class="btn btn-outline-danger">Eliminar</a>
+                                    <a asp-controller="Users" asp-action="Edit" asp-route-id="#" class="btn btn-outline-success">Editar</a>
+                                </td>
+                            </tr>
+                        }
+                    }
                 </tbody>
             </table>
 

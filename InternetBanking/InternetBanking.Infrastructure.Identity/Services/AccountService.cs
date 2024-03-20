@@ -257,44 +257,47 @@ namespace InternetBanking.Infrastructure.Identity.Services
             return userVM;
         }
         //Metodo para obtener todos los administradores
-        public async Task<List<SaveUserViewModel>> GetAllUserAdminAsync()
+        public async Task<List<UserViewModel>> GetAllUserAdminAsync()
         {
             var userList = await _userManager.GetUsersInRoleAsync("Administrator");
-            List<SaveUserViewModel> vm = new();
+            List<UserViewModel> vm = new();
             if (userList != null)
             {
                 foreach (var user in userList)
                 {
-                    vm.Add(new SaveUserViewModel()
+                    vm.Add(new UserViewModel()
                     {
                         Id = user.Id,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         CardIdentificantion = user.CardIdentification,
                         Email = user.Email,
-                        Username = user.UserName
+                        UserName = user.UserName,
+                        IsVerified = user.EmailConfirmed
                     });
                 }
             }
             return vm;
         }
 
-        public async Task<List<SaveUserViewModel>> GetAllUserClientAsync()
+        //Metodo para obtener todos los clientes
+        public async Task<List<UserViewModel>> GetAllUserClientAsync()
         {
             var userList = await _userManager.GetUsersInRoleAsync("Client");
-            List<SaveUserViewModel> vm = new();
+            List<UserViewModel> vm = new();
             if (userList != null)
             {
                 foreach (var user in userList)
                 {
-                    vm.Add(new SaveUserViewModel()
+                    vm.Add(new UserViewModel()
                     {
                         Id = user.Id,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         CardIdentificantion = user.CardIdentification,
                         Email = user.Email,
-                        Username = user.UserName
+                        UserName = user.UserName,
+                        IsVerified = user.EmailConfirmed
                     });
                 }
             }

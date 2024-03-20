@@ -11,5 +11,7 @@ namespace InternetBanking.Core.Application.Interfaces.Service
         Task<SaveUserViewModel> RegisterAsync(SaveUserViewModel vm);
         Task SignOutAsync();
         Task<SaveUserViewModel> UpdateUserAsync(SaveUserViewModel svm);
+        Task<List<UserViewModel>> GetAllUserClientAsync();
+        Task<List<UserViewModel>> GetAllUserAdminAsync();
     }
 }

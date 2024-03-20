@@ -12,5 +12,7 @@ namespace InternetBanking.Infrastructure.Identity.Services
         Task ActiveUser(string id);
         Task DesactiveUser(string id);
         Task<UserSearchResponse> SearchUser(UserSearchRequest request);
+        Task<List<UserViewModel>> GetAllUserClientAsync();
+        Task<List<UserViewModel>> GetAllUserAdminAsync();
     }
 }

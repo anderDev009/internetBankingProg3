@@ -49,5 +49,15 @@ namespace InternetBanking.Core.Application.Services
         {
             await _accountService.ActiveUser(id);
         }
+
+        public async Task<List<UserViewModel>> GetAllUserClientAsync()
+        {
+            return await _accountService.GetAllUserClientAsync();
+        }
+
+        public async Task<List<UserViewModel>> GetAllUserAdminAsync()
+        {
+            return await _accountService.GetAllUserAdminAsync();
+        }
     }
 }
