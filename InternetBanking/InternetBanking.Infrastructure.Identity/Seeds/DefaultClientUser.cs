@@ -21,11 +21,11 @@ namespace InternetBanking.Infrastructure.Identity.Seeds
             defaultUser.PhoneNumberConfirmed = true;
 
             //Validar si el default user existe
-            if (userManager.Users.All(u => u.Id == defaultUser.Id))
+            if (userManager.Users.All(u => u.Id != defaultUser.Id))
             {
                 //Validar si hay algun user con el mismo correo
-                var user = userManager.FindByEmailAsync(defaultUser.Email);
-                if (user != null)
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
                 {
                     await userManager.CreateAsync(defaultUser, "123Password$");
                     await userManager.AddToRoleAsync(defaultUser, Roles.Client.ToString());
