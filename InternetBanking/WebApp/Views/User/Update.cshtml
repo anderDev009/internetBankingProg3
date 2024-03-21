@@ -3,7 +3,7 @@
 @model SaveUserViewModel;
 @{
 
-
+    ViewData["Title"] = "Update Page";
 }
 <head>
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
@@ -19,7 +19,7 @@
 
                             <div class="mb-md-5 mt-md-4 pb-5">
 
-                                <form method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Update">
+                                <form method="post"  asp-controller="User" asp-action="Update">
 
                                     <h2 class="fw-bold mb-2 text-uppercase">Editar User</h2>
                                     <p class="text-white-50 mb-5">Llena el siguiente form!</p>
@@ -64,6 +64,11 @@
                                         <label asp-for="Username" class="form-label">Usuario</label>
                                         <span asp-validation-for="Username" class="text-danger"></span>
                                     </div>
+                                    <div class="form-outline form-white mb-4">
+                                        <input asp-for="currentPassword" type="password" class="form-control form-control-lg" />
+                                        <label asp-for="currentPassword" class="form-label">contraseña actual</label>
+                                        <span asp-validation-for="currentPassword" class="text-danger"></span>
+                                    </div>
 
                                     <div class="form-outline form-white mb-4">
                                         <input asp-for="Password" type="password" class="form-control form-control-lg" />
@@ -76,23 +81,28 @@
                                         <label asp-for="ConfirmPassword" class="form-label">Confimar Contraseña</label>
                                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                     </div>
-                                    @if (Model.TypeUser == "cliente")
+                                    @if (Model.TypeUser == "Client")
                                     {
-                                        <div class="form-outline form-white mb-4" id="montoInicialDiv" style="display: none;">
-                                            <label asp-for="InitialAmmount" class="form-label">Monto inicial: </label>
+                                        <div class="form-outline form-white mb-4">
+                                            <label asp-for="InitialAmmount" class="form-label">Monto: </label>
                                             <input asp-for="InitialAmmount" class="form-control" />
                                             <span asp-validation-for="InitialAmmount" class="text-danger"></span>
                                         </div>
+                                        <input type="hidden" asp-for="TypeUser" value="Cliente" />
+
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" asp-for="TypeUser" value="Administrador" />
                                     }
 
-                                    
                                     <input type="hidden" asp-for="Id" />
 
                                     <button class="btn btn-outline-light btn-lg px-5" type="submit">Registro</button>
                                 </form>
                             </div>
 
-                            }
+                            
 
                         </div>
                     </div>

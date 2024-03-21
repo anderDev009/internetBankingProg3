@@ -252,8 +252,9 @@ namespace InternetBanking.Infrastructure.Identity.Services
                     return vm;
                 }
             }
+            await _userManager.UpdateAsync(AppUser);
 
-            
+
             return userVM;
         }
         //Metodo para obtener todos los administradores
@@ -309,6 +310,7 @@ namespace InternetBanking.Infrastructure.Identity.Services
         {
             SaveUserViewModel vm = new();
             var User =  await _userManager.FindByIdAsync(Id);
+            var rol = await _userManager.GetRolesAsync(User);
             if (User != null)
             {
                 vm = new SaveUserViewModel
@@ -320,7 +322,7 @@ namespace InternetBanking.Infrastructure.Identity.Services
                     Email = User.Email,
                     Username = User.UserName,
                     IsConfirm = User.EmailConfirmed,
-                    TypeUser =  _userManager.GetRolesAsync(User).ToString()
+                    TypeUser = rol.FirstOrDefault()
                 };
                 return vm;
             }

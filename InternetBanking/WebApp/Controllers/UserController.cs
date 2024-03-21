@@ -98,13 +98,16 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Update(String Id)
         {
 
-            return View(await _userService.GetByIdUser(Id));
+            SaveUserViewModel vm = await _userService.GetByIdUser(Id);
+            return View(vm);
         }
 
         [HttpPost]
         public async Task<IActionResult> Update(SaveUserViewModel vm)
         {
-            if (!ModelState.IsValid && vm.Id != null)
+            if (ModelState["Email"].Errors.Any() || ModelState["FirstName"].Errors.Any()
+                || ModelState["LastName"].Errors.Any() || ModelState["CardIdentificantion"].Errors.Any()
+                || ModelState["Username"].Errors.Any())
             {
                 return View(vm);
             }
