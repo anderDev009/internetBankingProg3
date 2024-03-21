@@ -83,5 +83,19 @@ namespace InternetBanking.Core.Application.Services
             bank.IsMainAccount = true;
             return bank;
         }
+        //Metodo para sumar el monto que quieta poner en la cuenta principal
+        public async Task UserSumAmmount(string IdUser, decimal Ammount)
+        {
+            var account = await GetUserMainBank(IdUser);
+            account.Balance += Ammount;
+            await _bankAccountRepository.UpdateAsync(account, int.Parse(account.Code));
+        }
+
+        //metodo para buscar cuenta main de usuario
+        public async Task<Account> GetUserMainBank(string IdUser)
+        {
+            var MainBank = await _bankAccountRepository.GetAllAsync();
+            return MainBank.First(a => a.IsMainAccount == true && a.IdUser == IdUser);
+        }
     }
 }
