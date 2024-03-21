@@ -304,6 +304,34 @@ namespace InternetBanking.Infrastructure.Identity.Services
             return vm;
         }
 
+        //metodo para obtener user por ID
+        public async Task<SaveUserViewModel> GetByIdUser(string Id)
+        {
+            SaveUserViewModel vm = new();
+            var User =  await _userManager.FindByIdAsync(Id);
+            if (User != null)
+            {
+                vm = new SaveUserViewModel
+                {
+                    Id = User.Id,
+                    FirstName = User.FirstName,
+                    LastName = User.LastName,
+                    CardIdentificantion = User.CardIdentification,
+                    Email = User.Email,
+                    Username = User.UserName,
+                    IsConfirm = User.EmailConfirmed,
+                    TypeUser =  _userManager.GetRolesAsync(User).ToString()
+                };
+                return vm;
+            }
+            else
+            {
+                vm.Error = "No se encontro el user";
+                vm.HasError = true;
+                return vm;
+            }
+        }
+
         //metodo para activar usuario
         public async Task ActiveUser(string id)
         {

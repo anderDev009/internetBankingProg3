@@ -91,6 +91,36 @@ namespace WebApp.Controllers
                 return View(vm);
 
             }
+
+        }
+
+        //editar usuario
+        public async Task<IActionResult> Update(String Id)
+        {
+
+            return View(await _userService.GetByIdUser(Id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(SaveUserViewModel vm)
+        {
+            if (!ModelState.IsValid && vm.Id != null)
+            {
+                return View(vm);
+            }
+            SaveUserViewModel response = await _userService.UpdateUserAsync(vm);
+            if (response != null && response.HasError != true)
+            {
+                return RedirectToRoute(new { controller = "Home", action = "Index" });
+            }
+            else
+            {
+                vm.HasError = response.HasError;
+                vm.Error = response.Error;
+                return View(vm);
+
+            }
+
         }
     }
 }
