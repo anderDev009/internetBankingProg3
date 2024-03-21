@@ -1,5 +1,6 @@
 ﻿
 using InternetBanking.Core.Application.ViewModels.Beneficiary;
+using InternetBanking.Core.Application.ViewModels.PayExpress;
 using InternetBanking.Core.Domain.Entities;
 
 namespace InternetBanking.Core.Application.ViewModels.BankAccount
@@ -18,8 +19,8 @@ namespace InternetBanking.Core.Application.ViewModels.BankAccount
         //pagos a prestamos
         public List<LoanPay>? LoanPayments { get; set; }
         //pagos que le han hecho a esta cuenta
-        public List<PayExpress>? PaymentsMade { get; set; }
+        public List<PayExpressViewModel>? PaymentsMade { get; set; }
         //pagos a otras cuentas
-        public List<PayExpress> PaymentsOtherAccount { get; set; }
+        public List<PayExpressViewModel> PaymentsOtherAccount { get; set; }
     }
 }
