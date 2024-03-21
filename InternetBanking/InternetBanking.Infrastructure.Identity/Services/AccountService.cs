@@ -165,11 +165,12 @@ namespace InternetBanking.Infrastructure.Identity.Services
             SaveUserViewModel userVM = new SaveUserViewModel();
 
             //valida si el user es cliente que el monto inicial no sea menor que 0
-            if (vm.TypeUser == "cliente")
+            if (vm.TypeUser == "Cliente")
             {
                 if (vm.InitialAmmount != 0)
                 {
                     //metodo para sumar el dinero al balance que tiene en la cuenta principal
+                    await _bankAccountService.UserSumAmmount(vm.Id, vm.InitialAmmount);
                 }
             }
 
