@@ -10,5 +10,6 @@ namespace InternetBanking.Core.Application.Interfaces.Repositories
         Task<bool> AccountExistsAsync(string accountId);
         Task<bool> HasMoney(string codeAccount);
         Task TransferBalanceToMainAccountAsync(string codeAccount);
+        Task<Account> UpdateAsync(Account entity, string id);
     }
 }

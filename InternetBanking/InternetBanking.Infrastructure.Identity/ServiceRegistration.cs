@@ -1,5 +1,6 @@
 ﻿using InternetBanking.Infrastructure.Identity.Context;
 using InternetBanking.Infrastructure.Identity.Entities;
+using InternetBanking.Infrastructure.Identity.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +37,10 @@ namespace InternetBanking.Infrastructure.Identity
 
             //Agrege el manejo de autentication
             services.AddAuthentication();
+            #endregion
+
+            #region Services
+            services.AddTransient<IAccountService, AccountService>();
             #endregion
         }
     }

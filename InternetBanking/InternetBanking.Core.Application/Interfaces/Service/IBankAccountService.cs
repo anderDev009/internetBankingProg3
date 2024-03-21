@@ -12,5 +12,8 @@ namespace InternetBanking.Core.Application.Interfaces.Service
                                                         SaveBankAccountViewModel
                                                        ,Account>
     {
+        SaveBankAccountViewModel CreateNewBank(string IdUser, decimal InitialAmmount);
+        Task UserSumAmmount(string IdUser, decimal Ammount);
+        Task<Account> GetUserMainBank(string IdUser);
     }
 }

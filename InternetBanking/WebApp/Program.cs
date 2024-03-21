@@ -6,15 +6,21 @@ using InternetBanking.Infrastructure.Identity.Seeds;
 using Microsoft.AspNetCore.Identity;
 using InternetBanking.Core.Application;
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddSession();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//Application
 builder.Services.AddApplicationLayer();
+//persistense
 builder.Services.AddInfrastructureLayer(builder.Configuration);
 //Identity
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
 //Shaared
 builder.Services.AddSharedInfrastructure(builder.Configuration);
+
+//Añadir sesiones
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 var app = builder.Build();
 
 //Metodo para correr los Seeds
@@ -43,6 +49,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+//usa sesiones
+app.UseSession();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -54,6 +62,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=User}/{action=Index}/{id?}");
 
 app.Run();
