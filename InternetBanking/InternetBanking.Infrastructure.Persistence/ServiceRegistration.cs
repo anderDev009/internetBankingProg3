@@ -23,9 +23,11 @@ namespace InternetBanking.Infrastructure.Persistence
             #endregion
             #region Repositorio card
             services.AddTransient<ICardRepository, CardRepository>();
+            services.AddTransient<IPayCardRepository, PayCardRepository>();
             #endregion
             #region Repositorio de prestamos
             services.AddTransient<IloanRepository, LoanRepository>();
+            services.AddTransient<IPayLoanRepository, PayLoanRepository>();
             #endregion
             #region Repositorio de pagos express
             services.AddTransient<IPayExpressRepository, PayExpressRepository>();

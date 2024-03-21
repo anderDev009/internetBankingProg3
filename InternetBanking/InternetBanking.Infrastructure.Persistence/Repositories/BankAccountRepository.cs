@@ -15,6 +15,11 @@ namespace InternetBanking.Infrastructure.Persistence.Repositories
             _ctx = ctx;
         }
 
+        public async Task<bool> AccountExistsAsync(string accountId)
+        {
+            return await _ctx.Set<Account>().AnyAsync(c => c.Code == accountId);
+        }
+
         public override async Task<Account> GetByIdAsync(int id)
         {
             string code = id.ToString();
