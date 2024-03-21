@@ -4,6 +4,9 @@ using InternetBanking.Core.Application.ViewModels.BankAccount;
 using InternetBanking.Core.Application.ViewModels.Beneficiary;
 using InternetBanking.Core.Application.ViewModels.Card;
 using InternetBanking.Core.Application.ViewModels.Lean;
+using InternetBanking.Core.Application.ViewModels.PayCard;
+using InternetBanking.Core.Application.ViewModels.PayExpress;
+using InternetBanking.Core.Application.ViewModels.PayLoan;
 using InternetBanking.Core.Domain.Entities;
 using System.ComponentModel.Design;
 
@@ -27,17 +30,39 @@ namespace InternetBanking.Core.Application.Mappings
 
             CreateMap<Account, BankAccountViewModel>();
             #endregion
+            #region PayExpress
+            CreateMap<PayExpress, SavePayExpressViewModel>()
+                .ReverseMap()
+                .ForMember(p => p.AccountPaid, opt => opt.Ignore())
+                .ForMember(p => p.AccountPaymentMade, opt => opt.Ignore());
+            CreateMap<PayExpress, PayExpressViewModel>();
+            #endregion
             #region Card
             CreateMap<Card, SaveCardViewModel>()
                 .ReverseMap()
                 .ForMember(c => c.Payments, opt => opt.Ignore());
             CreateMap<Card, CardViewModel>();
+            #region PayCard
+            CreateMap<CardPay, PayCardViewModel>();
+            CreateMap<CardPay, SavePayCardViewModel>()
+                .ReverseMap()
+                .ForMember(p => p.AccountPaid, opt => opt.Ignore())
+                .ForMember(p => p.Card, opt => opt.Ignore());
             #endregion
-            #region Lean
+
+            #endregion
+            #region Loan
             CreateMap<Loan, LoanViewModel>();
             CreateMap<Loan, SaveLoanViewModel>()
                 .ReverseMap()
                 .ForMember(l => l.Payments, opt => opt.Ignore());
+            #region PayLoan
+            CreateMap<LoanPay, PayLoanViewModel>();
+            CreateMap<LoanPay, SavePayLoanViewModel>()
+                .ReverseMap()
+                .ForMember(l => l.Loan,opt => opt.Ignore())
+                .ForMember(l => l.AccountPaid,opt => opt.Ignore());
+            #endregion
             #endregion
             #region Beneficiary
             CreateMap<Beneficiary, BeneficiaryViewModel>();
