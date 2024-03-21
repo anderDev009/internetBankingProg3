@@ -91,6 +91,39 @@ namespace WebApp.Controllers
                 return View(vm);
 
             }
+
+        }
+
+        //editar usuario
+        public async Task<IActionResult> Update(String Id)
+        {
+
+            SaveUserViewModel vm = await _userService.GetByIdUser(Id);
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(SaveUserViewModel vm)
+        {
+            if (ModelState["Email"].Errors.Any() || ModelState["FirstName"].Errors.Any()
+                || ModelState["LastName"].Errors.Any() || ModelState["CardIdentificantion"].Errors.Any()
+                || ModelState["Username"].Errors.Any())
+            {
+                return View(vm);
+            }
+            SaveUserViewModel response = await _userService.UpdateUserAsync(vm);
+            if (response != null && response.HasError != true)
+            {
+                return RedirectToRoute(new { controller = "Home", action = "Index" });
+            }
+            else
+            {
+                vm.HasError = response.HasError;
+                vm.Error = response.Error;
+                return View(vm);
+
+            }
+
         }
     }
 }

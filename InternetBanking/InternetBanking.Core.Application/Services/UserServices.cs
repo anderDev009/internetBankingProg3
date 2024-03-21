@@ -59,5 +59,10 @@ namespace InternetBanking.Core.Application.Services
         {
             return await _accountService.GetAllUserAdminAsync();
         }
+        public async Task<SaveUserViewModel> GetByIdUser(string Id)
+        {
+            return await _accountService.GetByIdUser(Id);
+        }
+
     }
 }

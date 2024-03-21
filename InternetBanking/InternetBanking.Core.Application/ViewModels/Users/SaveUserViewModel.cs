@@ -35,6 +35,7 @@ namespace InternetBanking.Core.Application.ViewModels.Users
 
         [Required(ErrorMessage = "Debe colocar el tipo de usuario")]
         public string TypeUser { get; set; }
+        public bool IsConfirm { get; set; }
         public double? Amount { get; set; }
         public bool? HasError { get; set; }
         public string? Error { get; set; }

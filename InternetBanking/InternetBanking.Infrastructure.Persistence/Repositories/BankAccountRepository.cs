@@ -52,5 +52,13 @@ namespace InternetBanking.Infrastructure.Persistence.Repositories
             bool HasMainAccount = _ctx.Set<Account>().Any(account => account.IdUser == idUser);
             return HasMainAccount;
         }
+
+        public async Task<Account> UpdateAsync(Account entity, string id)
+        {
+            Account entry = await _ctx.Set<Account>().FindAsync(id);
+            _ctx.Entry(entry).CurrentValues.SetValues(entity);
+            await _ctx.SaveChangesAsync();
+            return entry;
+        }
     }
 }

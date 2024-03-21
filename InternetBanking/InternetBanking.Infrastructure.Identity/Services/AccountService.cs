@@ -165,11 +165,12 @@ namespace InternetBanking.Infrastructure.Identity.Services
             SaveUserViewModel userVM = new SaveUserViewModel();
 
             //valida si el user es cliente que el monto inicial no sea menor que 0
-            if (vm.TypeUser == "cliente")
+            if (vm.TypeUser == "Cliente")
             {
                 if (vm.InitialAmmount != 0)
                 {
                     //metodo para sumar el dinero al balance que tiene en la cuenta principal
+                    await _bankAccountService.UserSumAmmount(vm.Id, vm.InitialAmmount);
                 }
             }
 
@@ -252,8 +253,9 @@ namespace InternetBanking.Infrastructure.Identity.Services
                     return vm;
                 }
             }
+            await _userManager.UpdateAsync(AppUser);
 
-            
+
             return userVM;
         }
         //Metodo para obtener todos los administradores
@@ -302,6 +304,35 @@ namespace InternetBanking.Infrastructure.Identity.Services
                 }
             }
             return vm;
+        }
+
+        //metodo para obtener user por ID
+        public async Task<SaveUserViewModel> GetByIdUser(string Id)
+        {
+            SaveUserViewModel vm = new();
+            var User =  await _userManager.FindByIdAsync(Id);
+            var rol = await _userManager.GetRolesAsync(User);
+            if (User != null)
+            {
+                vm = new SaveUserViewModel
+                {
+                    Id = User.Id,
+                    FirstName = User.FirstName,
+                    LastName = User.LastName,
+                    CardIdentificantion = User.CardIdentification,
+                    Email = User.Email,
+                    Username = User.UserName,
+                    IsConfirm = User.EmailConfirmed,
+                    TypeUser = rol.FirstOrDefault()
+                };
+                return vm;
+            }
+            else
+            {
+                vm.Error = "No se encontro el user";
+                vm.HasError = true;
+                return vm;
+            }
         }
 
         //metodo para activar usuario
