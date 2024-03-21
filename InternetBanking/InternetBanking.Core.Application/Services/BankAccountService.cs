@@ -88,7 +88,7 @@ namespace InternetBanking.Core.Application.Services
         {
             var account = await GetUserMainBank(IdUser);
             account.Balance += Ammount;
-            await _bankAccountRepository.UpdateAsync(account, int.Parse(account.Code));
+            await _bankAccountRepository.UpdateAsync(account, account.Code);
         }
 
         //metodo para buscar cuenta main de usuario
