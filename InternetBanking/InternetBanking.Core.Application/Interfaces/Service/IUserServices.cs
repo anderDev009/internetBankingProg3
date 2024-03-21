@@ -13,5 +13,6 @@ namespace InternetBanking.Core.Application.Interfaces.Service
         Task<SaveUserViewModel> UpdateUserAsync(SaveUserViewModel svm);
         Task<List<UserViewModel>> GetAllUserClientAsync();
         Task<List<UserViewModel>> GetAllUserAdminAsync();
+        Task<SaveUserViewModel> GetByIdUser(string Id);
     }
 }
