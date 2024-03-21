@@ -7,6 +7,7 @@ namespace InternetBanking.Core.Application.Interfaces.Repositories
     {
         //metodo para saber si ya un usuario tiene asignado una cuenta principal
         Task<bool> UserHasMainAccount(string idUser);
+        Task<bool> AccountExistsAsync(string accountId);
         Task<bool> HasMoney(string codeAccount);
         Task TransferBalanceToMainAccountAsync(string codeAccount);
     }
