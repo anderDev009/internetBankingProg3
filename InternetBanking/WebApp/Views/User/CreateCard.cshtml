@@ -22,8 +22,10 @@
                         <span asp-validation-for="Limit" class="text-danger"></span>
                     </div>
                 </div>
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="IdUser" value="@Model.IdUser"/>
+                @{
+                    string Iduser = ViewBag.IdUser;
+                }
+                <input type="hidden" asp-for="IdUser" value="@Iduser" />
 
             <div class="text-center">
                 <button class="btn btn-outline-light btn-lg px-5" type="submit">Agregar Tarjeta</button>

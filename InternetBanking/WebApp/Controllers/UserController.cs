@@ -131,21 +131,18 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> CreateCard(String Id)
         {
-            SaveCardViewModel vm = new SaveCardViewModel
-            {
-                IdUser = Id
-            };
-            return View(vm);
+            ViewBag.IdUser = Id;
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCard(SaveCardViewModel vm)
         {
-            if (ModelState["AmountAvailable"].Errors.Any())
+            if (ModelState["Limit"].Errors.Any())
             {
                 return View(vm);
             }
-            
+            await _cardService.SaveAsync(vm);
             return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
     }
