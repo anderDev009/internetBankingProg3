@@ -124,6 +124,7 @@
                                                             <tr>
                                                                 <th>Número</th>
                                                                 <th>Saldo</th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -132,6 +133,11 @@
                                                                 <tr>
                                                                     <td>@account.Code</td>
                                                                     <td>$@account.Balance</td>
+                                                                    <td>
+                                                                        <a asp-controller="User" asp-action="DeleteBank" asp-route-Id="@account.Code" class="btn btn-danger btn-sm rounded-pill">
+                                                                            <i class="bi bi-trash"></i> Eliminar
+                                                                        </a>
+                                                                    </td>
                                                                 </tr>
                                                             }
                                                         </tbody>
@@ -156,6 +162,7 @@
                                                                 <th>Tipo</th>
                                                                 <th>Límite</th>
                                                                 <th>Disponible</th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -166,6 +173,11 @@
                                                                     <td><span class="badge bg-primary rounded-pill">Crédito</span></td>
                                                                     <td>$@card.Limit</td>
                                                                     <td>$@card.AmountAvailable</td>
+                                                                    <td>
+                                                                        <a asp-controller="User" asp-action="DeleteCard" asp-route-Id="@card.Id" class="btn btn-danger btn-sm rounded-pill">
+                                                                            <i class="bi bi-trash"></i> Eliminar
+                                                                        </a>
+                                                                    </td>
                                                                 </tr>
                                                             }
                                                         </tbody>
@@ -189,6 +201,7 @@
                                                             <tr>
                                                                 <th>Número</th>
                                                                 <th>Monto</th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -197,6 +210,11 @@
                                                                 <tr>
                                                                     <td>@loan.Id</td>
                                                                     <td>$@loan.LoanUser</td>
+                                                                    <td>
+                                                                        <a asp-controller="User" asp-action="DeleteLoan" asp-route-Id="@loan.Id" class="btn btn-danger btn-sm rounded-pill">
+                                                                            <i class="bi bi-trash"></i> Eliminar
+                                                                        </a>
+                                                                    </td>
                                                                 </tr>
                                                             }
                                                         </tbody>
