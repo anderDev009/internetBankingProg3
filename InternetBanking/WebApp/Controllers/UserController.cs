@@ -135,7 +135,7 @@ namespace WebApp.Controllers
             }
 
         }
-
+        //crear tarjeta de credito
         public async Task<IActionResult> CreateCard(String Id)
         {
             ViewBag.IdUser = Id;
