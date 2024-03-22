@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using InternetBanking.Core.Application.ViewModels.Card;
 using InternetBanking.Core.Application.ViewModels.Lean;
+using InternetBanking.Core.Application.ViewModels.BankAccount;
 
 namespace WebApp.Controllers
 {
@@ -139,6 +140,24 @@ namespace WebApp.Controllers
             }
 
         }
+        //crear Cuenta
+        public async Task<IActionResult> CreateAccount(String Id)
+        {
+            ViewBag.IdUser = Id;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAccount(SaveBankAccountViewModel vm)
+        {
+            if (ModelState["InitialAmmount"].Errors.Any())
+            {
+                return View(vm);
+            }
+            await _bankAccountService.SaveAsync(vm);
+            return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
+        }
+
         //crear tarjeta de credito
         public async Task<IActionResult> CreateCard(String Id)
         {
