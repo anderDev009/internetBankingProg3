@@ -50,8 +50,9 @@ namespace InternetBanking.Core.Application.Services
             return _mapper.Map<SaveBankAccountViewModel>(account);
         }
 
-        public override async Task RemoveAsync(int id)
+        public  async Task RemoveAsync(string code)
         {
+            int id = int.Parse(code);
             var account = await _bankAccountRepository.GetByIdAsync(id);
             if(account == null)
             {

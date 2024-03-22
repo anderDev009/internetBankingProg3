@@ -161,6 +161,7 @@ namespace WebApp.Controllers
         //Borrar cuenta de bank
         public async Task<IActionResult> DeleteBank (string Id)
         {
+            await _bankAccountService.RemoveAsync(Id);
             return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
 
