@@ -1,0 +1,33 @@
+﻿﻿@using InternetBanking.Core.Application.ViewModels.Card;
+@using InternetBanking.Core.Application.Helpers;
+@model SaveCardViewModel
+@{
+    ViewData["Title"] = "card Page";
+}
+<div class="card bg-dark text-white" style="border-radius: 1rem;">
+    <div class="card-body p-5">
+        <h3 class="fw-bold mb-4 text-uppercase text-center">Agregar Tarjeta</h3>
+
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+        <form method="post" asp-controller="User" asp-action="CreateCard">
+
+
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="form-outline form-white">
+                        <input asp-for="Limit" type="text" class="form-control form-control-lg"/>
+                        <label asp-for="Limit" class="form-label">Limite de la tarjeta</label>
+                        <span asp-validation-for="Limit" class="text-danger"></span>
+                    </div>
+                </div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="IdUser" value="@Model.IdUser"/>
+
+            <div class="text-center">
+                <button class="btn btn-outline-light btn-lg px-5" type="submit">Agregar Tarjeta</button>
+            </div>
+        </form>
+    </div>
+</div>
