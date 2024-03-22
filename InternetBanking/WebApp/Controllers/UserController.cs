@@ -112,7 +112,7 @@ namespace WebApp.Controllers
             var ListA = await _bankAccountService.GetAllAsync();
             ViewBag.CardList = ListC.FindAll(u => u.IdUser == Id).ToList();
             ViewBag.LoanList = ListL.FindAll(u => u.IdUser == Id).ToList();
-            ViewBag.AccountList = ListA.FindAll(a => a.id);
+            ViewBag.AccountList = ListA.FindAll(a => a.IdUser == Id).ToList();
             return View(vm);
         }
 

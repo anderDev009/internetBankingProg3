@@ -10,7 +10,7 @@ using InternetBanking.Core.Domain.Entities;
 namespace InternetBanking.Core.Application.Services
 {
     //clase para manejo de cuentas de banco 
-    public class BankAccountService : BaseService<IBankAccountService,SaveBankAccountViewModel,Account>
+    public class BankAccountService : BaseService<BankAccountViewModel,SaveBankAccountViewModel,Account>
                                       ,IBankAccountService
     {
 
@@ -97,5 +97,7 @@ namespace InternetBanking.Core.Application.Services
             var MainBank = await _bankAccountRepository.GetAllAsync();
             return MainBank.First(a => a.IsMainAccount == true && a.IdUser == IdUser);
         }
+
+        
     }
 }
