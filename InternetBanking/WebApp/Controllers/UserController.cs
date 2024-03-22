@@ -158,6 +158,13 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
 
+        //Borrar cuenta de bank
+        public async Task<IActionResult> DeleteBank (string Id)
+        {
+            return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
+        }
+
+
         //crear tarjeta de credito
         public async Task<IActionResult> CreateCard(String Id)
         {
@@ -173,6 +180,12 @@ namespace WebApp.Controllers
                 return View(vm);
             }
             await _cardService.SaveAsync(vm);
+            return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
+        }
+        //Borrar tarjeta de credito
+        public async Task<IActionResult> DeleteCard(int Id)
+        {
+            await _cardService.RemoveAsync(Id);
             return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
 
@@ -194,5 +207,15 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
 
+        //Borrar prestamo
+
+        public async Task<IActionResult> DeleteLoan(int Id)
+        {
+            await _loanService.RemoveAsync(Id);
+            return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
+        }
+
     }
+
+    
 }
