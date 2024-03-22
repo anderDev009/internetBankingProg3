@@ -4,6 +4,7 @@ using InternetBanking.Core.Application.ViewModels.Users;
 using InternetBanking.Core.Application.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using InternetBanking.Core.Application.ViewModels.Card;
 
 namespace WebApp.Controllers
 {
@@ -126,6 +127,26 @@ namespace WebApp.Controllers
 
             }
 
+        }
+
+        public async Task<IActionResult> CreateCard(String Id)
+        {
+            SaveCardViewModel vm = new SaveCardViewModel
+            {
+                IdUser = Id
+            };
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCard(SaveCardViewModel vm)
+        {
+            if (ModelState["AmountAvailable"].Errors.Any())
+            {
+                return View(vm);
+            }
+            
+            return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
     }
 }
