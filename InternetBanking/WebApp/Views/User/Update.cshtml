@@ -1,5 +1,6 @@
 ﻿﻿@using InternetBanking.Core.Application.ViewModels;
 @using InternetBanking.Core.Application.ViewModels.Users;
+@using InternetBanking.Core.Application.ViewModels.Card;
 @model SaveUserViewModel;
 @{
 
@@ -104,37 +105,39 @@
 
                             @if (Model.TypeUser == "Client")
                             {
-                                    <div class="mb-md-5 mt-md-4 pb-5">
-                                        <h3 class="fw-bold mb-4 text-uppercase text-white">Mis Tarjetas</h3>
+                                <div class="mb-md-5 mt-md-4 pb-5">
+                                    <h3 class="fw-bold mb-4 text-uppercase text-white">Mis Tarjetas</h3>
                                     <a asp-controller="User" asp-action="CreateCard" asp-route-Id="@Model.Id" class="btn btn-outline-light btn-lg px-5 mb-4 rounded-pill">Agregar Tarjeta</a>
 
+                                @if (ViewBag.CardList != null)
+                                {
                                         <div class="table-responsive">
                                             <table class="table table-dark table-hover">
-                                                <thead class="thead-light">
-                                                    <tr>
-                                                        <th>Número</th>
-                                                        <th>Tipo</th>
-                                                        <th>Saldo</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>**** **** **** 3456</td>
-                                                        <td><span class="badge bg-primary rounded-pill">Crédito</span></td>
-                                                        <td>$5,000.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>**** **** **** 2345</td>
-                                                        <td><span class="badge bg-success rounded-pill">Débito</span></td>
-                                                        <td>$2,500.00</td>
-                                                    </tr>
-                                                    <!-- Más filas para otras tarjetas -->
-                                                </tbody>
+                                                @foreach(CardViewModel card in ViewBag.CardList)
+                                                {
+
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th>Número</th>
+                                                            <th>Tipo</th>
+                                                            <th>Limite</th>
+                                                            <th>Disponible</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>@card.Id</td>
+                                                            <td><span class="badge bg-primary rounded-pill">Crédito</span></td>
+                                                            <td>$@card.Limit</td>
+                                                            <td>$@card.AmountAvailable</td>
+                                                        </tr>
+                                                    </tbody>
+                                                }
                                             </table>
                                         </div>
-                                    </div>
+                                }
+                                </div>
                             }
-
                         </div>
                     </div>
                 </div>

@@ -102,6 +102,8 @@ namespace WebApp.Controllers
         {
 
             SaveUserViewModel vm = await _userService.GetByIdUser(Id);
+            var ListC = await _cardService.GetAllAsync();
+            ViewBag.CardList = ListC.FindAll(u => u.IdUser == Id).ToList();
             return View(vm);
         }
 
