@@ -135,7 +135,7 @@ namespace WebApp.Controllers
             {
                 IdUser = Id
             };
-            return View();
+            return View(vm);
         }
 
         [HttpPost]
