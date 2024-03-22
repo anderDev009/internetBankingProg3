@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace InternetBanking.Core.Application.Interfaces.Service
 {
-    public interface IBankAccountService : IBaseService<IBankAccountService,
+    public interface IBankAccountService : IBaseService<BankAccountViewModel,
                                                         SaveBankAccountViewModel
                                                        ,Account>
     {

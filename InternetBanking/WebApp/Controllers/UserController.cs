@@ -14,12 +14,14 @@ namespace WebApp.Controllers
         private readonly IUserServices _userService;
         private readonly ICardService _cardService;
         private readonly ILoanService _loanService;
+        private readonly IBankAccountService _bankAccountService;
 
-        public UserController(IUserServices userService, ICardService cardService, ILoanService loanService)
+        public UserController(IUserServices userService, ICardService cardService, ILoanService loanService, IBankAccountService bankAccountService)
         {
             _userService = userService;
             _cardService = cardService;
             _loanService = loanService;
+            _bankAccountService = bankAccountService;
         }
         public IActionResult Index()
         {
@@ -107,8 +109,10 @@ namespace WebApp.Controllers
             SaveUserViewModel vm = await _userService.GetByIdUser(Id);
             var ListC = await _cardService.GetAllAsync();
             var ListL = await _loanService.GetAllAsync();
+            var ListA = await _bankAccountService.GetAllAsync();
             ViewBag.CardList = ListC.FindAll(u => u.IdUser == Id).ToList();
             ViewBag.LoanList = ListL.FindAll(u => u.IdUser == Id).ToList();
+            ViewBag.AccountList = ListA.FindAll(a => a.id);
             return View(vm);
         }
 
