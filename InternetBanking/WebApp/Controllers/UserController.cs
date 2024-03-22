@@ -5,6 +5,7 @@ using InternetBanking.Core.Application.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using InternetBanking.Core.Application.ViewModels.Card;
+using InternetBanking.Core.Application.ViewModels.Lean;
 
 namespace WebApp.Controllers
 {
@@ -12,11 +13,13 @@ namespace WebApp.Controllers
     {
         private readonly IUserServices _userService;
         private readonly ICardService _cardService;
+        private readonly ILoanService _loanService;
 
-        public UserController(IUserServices userService, ICardService cardService)
+        public UserController(IUserServices userService, ICardService cardService, ILoanService loanService)
         {
             _userService = userService;
             _cardService = cardService;
+            _loanService = loanService;
         }
         public IActionResult Index()
         {
@@ -103,7 +106,9 @@ namespace WebApp.Controllers
 
             SaveUserViewModel vm = await _userService.GetByIdUser(Id);
             var ListC = await _cardService.GetAllAsync();
+            var ListL = await _loanService.GetAllAsync();
             ViewBag.CardList = ListC.FindAll(u => u.IdUser == Id).ToList();
+            ViewBag.LoanList = ListL.FindAll(u => u.IdUser == Id).ToList();
             return View(vm);
         }
 
@@ -147,5 +152,24 @@ namespace WebApp.Controllers
             await _cardService.SaveAsync(vm);
             return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
+
+        //Crear prestamo
+        public async Task<IActionResult> CreateLoan(String Id)
+        {
+            ViewBag.IdUser = Id;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateLoan(SaveLoanViewModel vm)
+        {
+            if (ModelState["LoanUser"].Errors.Any())
+            {
+                return View(vm);
+            }
+            await _loanService.SaveAsync(vm);
+            return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
+        }
+
     }
 }
