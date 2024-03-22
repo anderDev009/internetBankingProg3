@@ -10,10 +10,12 @@ namespace WebApp.Controllers
     public class UserController : Controller
     {
         private readonly IUserServices _userService;
+        private readonly ICardService _cardService;
 
-        public UserController(IUserServices userService)
+        public UserController(IUserServices userService, ICardService cardService)
         {
             _userService = userService;
+            _cardService = cardService;
         }
         public IActionResult Index()
         {
