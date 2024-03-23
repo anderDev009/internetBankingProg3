@@ -89,8 +89,6 @@ namespace WebApp.Controllers
         }
 
         //crear usuario
-        [ServiceFilter(typeof(LoginAuthorize))]
-
         public async Task<IActionResult> Register()
         {
             return View(new SaveUserViewModel());
@@ -118,8 +116,6 @@ namespace WebApp.Controllers
             }
 
         }
-
-
 
         //editar usuario
         [Authorize(Roles = "Administrator")]
