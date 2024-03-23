@@ -1,0 +1,114 @@
+﻿@using InternetBanking.Core.Application.ViewModels;
+@using InternetBanking.Core.Application.ViewModels.Users;
+@using InternetBanking.Core.Application.ViewModels.Card;
+@using InternetBanking.Core.Application.ViewModels.BankAccount;
+@using InternetBanking.Core.Application.ViewModels.Lean;
+
+@{
+    ViewBag.Title = "Productos del Cliente";
+}
+
+<head>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .main-content {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-top: 40px;
+        }
+
+        .product-list {
+            margin-bottom: 40px;
+        }
+
+            .product-list h3 {
+                color: #333;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 20px;
+                position: relative;
+                padding-bottom: 10px;
+            }
+
+                .product-list h3::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 50px;
+                    height: 2px;
+                    background-color: #007bff;
+                }
+
+        .list-group-item {
+            background-color: #f8f9fa;
+            border: none;
+            border-radius: 4px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+            .list-group-item:hover {
+                background-color: #f0f0f0;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                transform: translateY(-2px);
+            }
+    </style>
+</head>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="main-content">
+                <h2>Productos del Cliente</h2>
+
+                <div class="product-list">
+                    <h3>Cuentas de Ahorro</h3>
+                    <ul class="list-group">
+                        @foreach (var account in ViewBag.AccountList)
+                        {
+                            <li class="list-group-item">
+                                Cuenta de Ahorro - Saldo: @account.Balance
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="product-list">
+                    <h3>Tarjetas de Crédito</h3>
+                    <ul class="list-group">
+                        @foreach (var card in ViewBag.CardList)
+                        {
+                            var diferencia = card.Limit - card.AmountAvailable;
+                            <li class="list-group-item">
+                                Tarjeta de Crédito @card.Id - debes: @diferencia
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="product-list">
+                    <h3>Préstamos</h3>
+                    <ul class="list-group">
+                        @foreach (var loan in ViewBag.LoanList)
+                        {
+                            <li class="list-group-item">
+                                Préstamo @loan.Id - debes: @loan.BalanceLoan
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,17 +12,20 @@ namespace WebApp.Controllers
 {
     public class UserController : Controller
     {
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IUserServices _userService;
         private readonly ICardService _cardService;
         private readonly ILoanService _loanService;
         private readonly IBankAccountService _bankAccountService;
 
-        public UserController(IUserServices userService, ICardService cardService, ILoanService loanService, IBankAccountService bankAccountService)
+        public UserController(IUserServices userService, ICardService cardService, ILoanService loanService, 
+            IBankAccountService bankAccountService, IHttpContextAccessor contextAccessor)
         {
             _userService = userService;
             _cardService = cardService;
             _loanService = loanService;
             _bankAccountService = bankAccountService;
+            _contextAccessor = contextAccessor;
         }
         public IActionResult Index()
         {
@@ -44,7 +47,7 @@ namespace WebApp.Controllers
                 {
                     return RedirectToRoute(new { controller = "Home", action = "Index" });
                 }
-                return RedirectToRoute(new { controller = "Home", action = "IndexClient" });
+                return RedirectToRoute(new { controller = "Home", action = "Home" });
 
             }
             else
@@ -107,6 +110,8 @@ namespace WebApp.Controllers
             }
 
         }
+
+        
 
         //editar usuario
         public async Task<IActionResult> Update(String Id)
