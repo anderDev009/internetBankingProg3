@@ -104,13 +104,13 @@ namespace WebApp.Controllers
             if(!ModelState.IsValid)
             {
                 ViewBag.Error = "Campos invalidos";
-                return View("Transfer");
+                return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
             }
             //comprobamos que no sea a la misma cuenta
-            if(vm.AccountNumber == vm.IdAccountPaid)
+            if (vm.AccountNumber == vm.IdAccountPaid)
             {
                 ViewBag.Error = "No puedes transferir dinero a la misma cuenta.";
-                return View("Transfer");
+                return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
             }
             try
             {
@@ -122,7 +122,7 @@ namespace WebApp.Controllers
                 return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
             }
             ViewBag.Success = "Transferencia completada";
-            return View("Transfer");
+            return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
         }
             
     }
