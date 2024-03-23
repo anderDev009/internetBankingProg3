@@ -52,7 +52,7 @@ namespace InternetBanking.Core.Application.Services
             account.Balance -= vm.Amount;
             await _accountService.UpdateAsync(account, int.Parse(account.Code));
             //actualizamos el prestamo
-            loan.BalanceLoan += vm.Amount;
+            loan.BalanceLoan -= vm.Amount;
             await _loanService.UpdateAsync(loan, loan.Id);
             return await base.SaveAsync(vm);
         }

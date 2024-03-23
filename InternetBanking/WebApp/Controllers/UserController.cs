@@ -211,6 +211,7 @@ namespace WebApp.Controllers
             {
                 return View(vm);
             }
+            vm.BalanceLoan = vm.LoanUser;
             await _loanService.SaveAsync(vm);
             return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
