@@ -37,10 +37,10 @@
                                     <label asp-for="IdAccountPaid" class="form-label">Cuenta origen</label>
                                     <select asp-for="IdAccountPaid">
                                         <option disabled>Selecciona una cuenta origen</option>
-                                        @foreach (var account in ViewBag.Accounts)
+                                        @foreach (var banks in ViewBag.banks)
                                         {
-                                            <option value="@account.Code">
-                                                @account.Code
+                                            <option value="@banks.Code">
+                                                @banks.Code
                                             </option>
                                         }
                                     </select>
