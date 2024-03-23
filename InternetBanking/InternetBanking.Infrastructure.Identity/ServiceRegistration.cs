@@ -35,6 +35,9 @@ namespace InternetBanking.Infrastructure.Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(options =>
+            options.LoginPath = "/User");
+
             //Agrege el manejo de autentication
             services.AddAuthentication();
             #endregion
