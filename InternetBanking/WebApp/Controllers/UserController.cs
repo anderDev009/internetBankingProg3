@@ -3,8 +3,6 @@ using InternetBanking.Core.Application.Interfaces.Service;
 using InternetBanking.Core.Application.ViewModels.Users;
 using InternetBanking.Core.Application.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-
 using InternetBanking.Core.Application.ViewModels.Card;
 using InternetBanking.Core.Application.ViewModels.Lean;
 using InternetBanking.Core.Application.ViewModels.BankAccount;
