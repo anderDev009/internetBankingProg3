@@ -1,0 +1,40 @@
+﻿@using InternetBanking.Core.Application.Helpers;
+﻿@using Microsoft.AspNetCore.Http;
+@using InternetBanking.Core.Application.Dtos.Account;
+@using InternetBanking.Core.Application.Enums;
+@inject IHttpContextAccessor httpContext;
+@{
+    var user = httpContext.HttpContext.Session.Get<AuthenticationResponse>("user");
+    ViewData["Title"] = "Acceso Denegado";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 mb-4">Acceso Denegado</h1>
+            <p class="lead">Lo sentimos, no tienes permiso para acceder a esta página.</p>
+            @if (user.Roles.Contains(Roles.Administrator.ToString()))
+            {
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg mt-4">Ir al Inicio</a>
+            }
+            else
+            {
+                <a href="@Url.Action("Home", "Home")" class="btn btn-primary btn-lg mt-4">Ir al Inicio</a>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+}

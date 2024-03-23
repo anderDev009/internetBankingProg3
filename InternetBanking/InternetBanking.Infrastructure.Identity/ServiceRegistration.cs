@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace InternetBanking.Infrastructure.Identity
 {
@@ -36,7 +37,11 @@ namespace InternetBanking.Infrastructure.Identity
                 .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(options =>
-            options.LoginPath = "/User");
+            {
+                options.LoginPath = "/User";
+                options.AccessDeniedPath = "/User/AccessDenied";
+            });
+            
 
             //Agrege el manejo de autentication
             services.AddAuthentication();
