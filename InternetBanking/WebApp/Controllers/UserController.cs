@@ -7,6 +7,7 @@ using InternetBanking.Core.Application.ViewModels.Card;
 using InternetBanking.Core.Application.ViewModels.Lean;
 using InternetBanking.Core.Application.ViewModels.BankAccount;
 using InternetBanking.Core.Application.Enums;
+using WebApp.MiddledWares;
 
 namespace WebApp.Controllers
 {
@@ -27,11 +28,13 @@ namespace WebApp.Controllers
             _bankAccountService = bankAccountService;
             _contextAccessor = contextAccessor;
         }
+        [ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult Index()
         {
             return View(new LoginViewModel());
         }
 
+        [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel login)
         {
@@ -63,7 +66,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> LogOut()
         {
             await _userService.SignOutAsync();
-            HttpContext.Session.Remove("user_session");
+            HttpContext.Session.Remove("user");
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
 
@@ -84,11 +87,14 @@ namespace WebApp.Controllers
         }
 
         //crear usuario
+        [ServiceFilter(typeof(LoginAuthorize))]
+
         public async Task<IActionResult> Register()
         {
             return View(new SaveUserViewModel());
         }
 
+        [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         public async Task<IActionResult> Register(SaveUserViewModel vm)
         {
