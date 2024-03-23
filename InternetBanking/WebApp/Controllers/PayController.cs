@@ -112,7 +112,7 @@ namespace WebApp.Controllers
             if (ModelState["Amount"].Errors.Any() || ModelState["IdAccountPaid"].Errors.Any()
                 || ModelState["IdLoan"].Errors.Any())
             {
-                return RedirectToRoute(new { controller = "Pay", action = "Card" });
+                return RedirectToRoute(new { controller = "Pay", action = "Loan" });
             }
             try
             {
@@ -121,10 +121,10 @@ namespace WebApp.Controllers
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                return RedirectToRoute(new { controller = "Pay", action = "Card" });
+                return RedirectToRoute(new { controller = "Pay", action = "Loan" });
             }
 
-            return RedirectToRoute(new { controller = "Pay", action = "Card" });
+            return RedirectToRoute(new { controller = "Pay", action = "Loan" });
 
         }
     }
