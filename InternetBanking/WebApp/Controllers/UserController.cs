@@ -227,6 +227,12 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
 
+        //denegacion de acceso
+        public async Task<IActionResult> AccessDenied()
+        {
+            return View();
+        }
+
     }
 
     
