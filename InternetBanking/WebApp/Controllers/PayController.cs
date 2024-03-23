@@ -161,5 +161,41 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller = "Pay", action = "Beneficiary" });
 
         }
+
+         public async Task<IActionResult> Transfer()
+        {
+            var user = _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+            var accounts = await _bankAccountService.GetAccountsByIdUserAsync(user.Id);
+            ViewBag.Accounts = accounts;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Transfer(SavePayExpressViewModel vm)
+        {
+            if(!ModelState.IsValid)
+            {
+                ViewBag.Error = "Campos invalidos";
+                return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
+            }
+            //comprobamos que no sea a la misma cuenta
+            if (vm.AccountNumber == vm.IdAccountPaid)
+            {
+                ViewBag.Error = "No puedes transferir dinero a la misma cuenta.";
+                return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
+            }
+            try
+            {
+                await _payExpressService.SaveAsync(vm);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
+            }
+            ViewBag.Success = "Transferencia completada";
+            return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
+        }
+            
     }
 }
