@@ -41,8 +41,8 @@ namespace WebApp.Controllers
             //---
             return View(vm);
         }
-        //dashboard client
         //Home de user
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> Home()
         {
             var user = _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
