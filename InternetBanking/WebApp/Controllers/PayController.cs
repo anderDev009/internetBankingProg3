@@ -19,9 +19,10 @@ namespace WebApp.Controllers
         private readonly IBankAccountService _bankAccountService;
         private readonly ICardService _cardService;
         private readonly ILoanService _loanService;
+        private readonly IBeneficiaryService _beneficiaryService;
         public PayController(IPayExpressService payExpressService, IHttpContextAccessor contextAccessor,
             IBankAccountService bankAccountService, ICardService cardAccountService, IPayCardService payCardService,
-            IPayLoanService payLoanServices, ILoanService loanService)
+            IPayLoanService payLoanServices, ILoanService loanService, IBeneficiaryService beneficiaryService)
         {
             _contextAccessor = contextAccessor;
             _payExpressService = payExpressService;
@@ -30,6 +31,7 @@ namespace WebApp.Controllers
             _bankAccountService = bankAccountService;
             _cardService = cardAccountService;
             _loanService = loanService;
+            _beneficiaryService = beneficiaryService;
         }
         public IActionResult Index()
         {
@@ -125,6 +127,38 @@ namespace WebApp.Controllers
             }
 
             return RedirectToRoute(new { controller = "Pay", action = "Loan" });
+
+        }
+
+        //Pago beneficiario
+        public async Task<IActionResult> Beneficiary()
+        {
+            var user = _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+            var beneficiarys = await _beneficiaryService.GetBeneficiaryByIdUser(user.Id);
+            var accounts = await _bankAccountService.GetAccountsByIdUserAsync(user.Id);
+
+            ViewBag.Accounts = accounts;
+            ViewBag.beneficiarys = beneficiarys;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Beneficiary(SavePayExpressViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToRoute(new { controller = "Pay", action = "Beneficiary" });
+            }
+            try
+            {
+                await _payExpressService.SaveAsync(vm);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return RedirectToRoute(new { controller = "Pay", action = "Beneficiary" });
+            }
+
+            return RedirectToRoute(new { controller = "Pay", action = "Beneficiary" });
 
         }
     }
