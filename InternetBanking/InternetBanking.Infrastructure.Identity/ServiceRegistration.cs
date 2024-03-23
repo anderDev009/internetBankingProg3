@@ -36,6 +36,7 @@ namespace InternetBanking.Infrastructure.Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders();
 
+            //rutas
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/User";
