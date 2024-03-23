@@ -1,6 +1,4 @@
-﻿
-
-using InternetBanking.Core.Domain.Entities;
+﻿using InternetBanking.Core.Domain.Entities;
 using InternetBanking.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
