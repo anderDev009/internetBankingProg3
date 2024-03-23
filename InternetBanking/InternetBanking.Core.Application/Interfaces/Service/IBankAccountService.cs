@@ -16,5 +16,8 @@ namespace InternetBanking.Core.Application.Interfaces.Service
         Task UserSumAmmount(string IdUser, decimal Ammount);
         Task<Account> GetUserMainBank(string IdUser);
         Task RemoveAsync(string code);
-    }
+
+        Task<List<BankAccountViewModel>> GetAccountsByIdUserAsync(string id);
+        Task<bool> AccountExistsAsync(string id);
+   }
 }

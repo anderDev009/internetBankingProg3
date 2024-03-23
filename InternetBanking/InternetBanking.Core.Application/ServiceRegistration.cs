@@ -24,6 +24,7 @@ namespace InternetBanking.Core.Application
             service.AddTransient<IPayExpressService, PayExpressService>();
             service.AddTransient<IPayCardService, PayCardService>();
             service.AddTransient<IUserServices, UserServices>();
+            service.AddTransient<IDashboardService,DashboardService>();
             #endregion
         }
     }

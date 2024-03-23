@@ -10,13 +10,16 @@ namespace InternetBanking.Core.Application.Services
     public class UserServices : IUserServices
     {
         private readonly IAccountService _accountService;
+        //servicio de bank accout
+        private readonly IBankAccountService _bankAccountService;
         private readonly IMapper _mapper;
 
-        public UserServices(IAccountService accountService, IMapper mapper)
+        public UserServices(IAccountService accountService, IMapper mapper, IBankAccountService bankAccountService)
         {
-
+            _bankAccountService = bankAccountService;
             _accountService = accountService;
             _mapper = mapper;
+            _bankAccountService = bankAccountService;
         }
 
         public async Task<AuthenticationResponse> LoginAsync(LoginViewModel vm)
@@ -28,7 +31,11 @@ namespace InternetBanking.Core.Application.Services
 
         public async Task<SaveUserViewModel> RegisterAsync(SaveUserViewModel vm)
         {
-            return await _accountService.RegisterAsync(vm);
+            var user = await _accountService.RegisterAsync(vm);
+            var account = _bankAccountService.CreateNewBank(user.Id, vm.InitialAmmount);
+            await _bankAccountService.SaveAsync(account);
+            return user;
+
         }
 
         public async Task SignOutAsync()

@@ -10,8 +10,8 @@ using InternetBanking.Core.Domain.Entities;
 namespace InternetBanking.Core.Application.Services
 {
     //clase para manejo de cuentas de banco 
-    public class BankAccountService : BaseService<BankAccountViewModel,SaveBankAccountViewModel,Account>
-                                      ,IBankAccountService
+
+    public class BankAccountService : BaseService<BankAccountViewModel, SaveBankAccountViewModel, Account>, IBankAccountService
     {
 
         private readonly IBankAccountRepository _bankAccountRepository;
@@ -51,6 +51,13 @@ namespace InternetBanking.Core.Application.Services
         }
 
         public  async Task RemoveAsync(string code)
+    
+        public override async Task<SaveBankAccountViewModel> UpdateAsync(SaveBankAccountViewModel vm, int id)
+        {
+           var account = await _bankAccountRepository.UpdateAsync(_mapper.Map<Account>(vm), vm.Code);
+            return _mapper.Map<SaveBankAccountViewModel>(account);
+        }
+        public override async Task RemoveAsync(int id)
         {
             int id = int.Parse(code);
             var account = await _bankAccountRepository.GetByIdAsync(id);
@@ -100,5 +107,15 @@ namespace InternetBanking.Core.Application.Services
         }
 
         
+        public async Task<List<BankAccountViewModel>> GetAccountsByIdUserAsync(string id)
+        {
+            var accounts = await _bankAccountRepository.GetAccountsByIdUserAsync(id);
+            return _mapper.Map<List<BankAccountViewModel>>(accounts);
+        }
+
+        public async Task<bool> AccountExistsAsync(string id)
+        {
+            return await _bankAccountRepository.AccountExistsAsync(id);
+        }
     }
 }

@@ -65,5 +65,10 @@ namespace InternetBanking.Infrastructure.Persistence.Repositories
             await _ctx.SaveChangesAsync();
             return entry;
         }
+
+        public async Task<List<Account>> GetAccountsByIdUserAsync(string id)
+        {
+            return await _ctx.Set<Account>().Where(c => c.IdUser == id).ToListAsync();
+        }
     }
 }

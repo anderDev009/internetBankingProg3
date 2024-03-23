@@ -19,7 +19,7 @@ namespace InternetBanking.Infrastructure.Identity.Seeds
             defaultUser.CardIdentification = "40211711";
             defaultUser.EmailConfirmed = true;
             defaultUser.PhoneNumberConfirmed = true;
-
+             
             //Validar si el default user existe
             if (userManager.Users.All(u => u.Id != defaultUser.Id))
             {

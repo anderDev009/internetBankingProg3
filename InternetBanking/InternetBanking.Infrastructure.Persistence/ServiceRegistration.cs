@@ -35,6 +35,9 @@ namespace InternetBanking.Infrastructure.Persistence
             #region Repositorio beneficiario
             services.AddTransient<IBeneficiaryRepository,BeneficiaryRepository>();
             #endregion
+            #region repositorio de reportes
+            services.AddTransient<IReportRepository, ReportRepository>();
+            #endregion
             #endregion
 
         }

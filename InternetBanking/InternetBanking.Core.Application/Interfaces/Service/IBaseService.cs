@@ -9,5 +9,6 @@
         Task<SaveViewModel> UpdateAsync(SaveViewModel vm, int id);
         Task<List<ViewModel>> GetAllAsync();
         Task RemoveAsync(int id);
+        Task<int> CountAsync();
     }
 }

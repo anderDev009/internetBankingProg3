@@ -6,5 +6,7 @@ namespace InternetBanking.Core.Application.Interfaces.Service
 {
     public interface IBeneficiaryService : IBaseService<BeneficiaryViewModel,SaveBeneficiaryViewModel,Beneficiary>
     {
+        Task<List<BeneficiaryViewModel>> GetBeneficiaryByIdUser(string IdUser);
+
     }
 }

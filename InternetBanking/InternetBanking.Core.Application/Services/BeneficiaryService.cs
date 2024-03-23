@@ -29,6 +29,13 @@ namespace InternetBanking.Core.Application.Services
             _bankAccountService = bankAccountService;
             _accountService = accountService;
         }
+       
+        public async Task<List<BeneficiaryViewModel>> GetBeneficiaryByIdUser(string IdUser)
+        {
+            List<Beneficiary> beneficiaries = await _beneficiaryRepository.GetBeneficiaryByIdUser(IdUser);
+            return  _mapper.Map<List<BeneficiaryViewModel>>(beneficiaries);
+        }
+
         public override async Task<SaveBeneficiaryViewModel> SaveAsync(SaveBeneficiaryViewModel vm)
         {
             SaveBankAccountViewModel account = await _bankAccountService.GetByIdAsync(vm.AccountNumber);
@@ -36,13 +43,7 @@ namespace InternetBanking.Core.Application.Services
             {
                 throw new Exception("Esta cuenta no existe");
             }
-            UserSearchResponse response = await _accountService
-                                                    .SearchUser(new UserSearchRequest { CodeUser = account.Code });
-
-            vm.Name = response.Name;
-            vm.LastName = response.LastName;
-            vm.IdUser = response.IdUser;
-
+  
             return await base.SaveAsync(vm);
         }
     }

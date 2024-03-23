@@ -6,8 +6,10 @@ namespace InternetBanking.Core.Application.ViewModels.PayExpress
 {
     public class SavePayExpressViewModel
     {
-        public int Id {  get; set; }
+        public int? Id {  get; set; }
+
         [Range(0,double.MaxValue,ErrorMessage = "Debe colocar un monto valido.")]
+        [DataType(DataType.Currency)]
         public decimal Amount { get; set; }
 
         [Required(ErrorMessage = "Necesita una cuenta para realizar una transaccion")]

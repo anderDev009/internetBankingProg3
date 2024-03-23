@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using InternetBanking.Core.Application.Interfaces.Service;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebApp.Models;
 
@@ -7,17 +9,28 @@ namespace WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IDashboardService _dashboardService;
+        public HomeController(ILogger<HomeController> logger, IDashboardService dashboardService)
         {
             _logger = logger;
+            _dashboardService = dashboardService;
         }
 
-        public IActionResult Index()
+
+        [Authorize(Roles = "Administrator")]
+        //dashboard user
+        public async Task<IActionResult> Index()
         {
-            return View();
+            //
+            var vm = await _dashboardService.GetDashboard();
+            //---
+            return View(vm);
         }
-
+        //dashboard client
+        public async Task<IActionResult> IndexClient()
+        {
+            return View("DashboardClient");
+        }
         public IActionResult Privacy()
         {
             return View();
