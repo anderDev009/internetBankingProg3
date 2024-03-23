@@ -4,10 +4,14 @@
 @using InternetBanking.Core.Application.Enums;
 @inject IHttpContextAccessor httpContext;
 @{
+    Layout = null;
     var user = httpContext.HttpContext.Session.Get<AuthenticationResponse>("user");
     ViewData["Title"] = "Acceso Denegado";
 }
+<head>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 
+</head>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8 text-center">
@@ -15,11 +19,11 @@
             <p class="lead">Lo sentimos, no tienes permiso para acceder a esta página.</p>
             @if (user.Roles.Contains(Roles.Administrator.ToString()))
             {
-                <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg mt-4">Ir al Inicio</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg mt-4">Ir al Inicio</a>
             }
             else
             {
-                <a href="@Url.Action("Home", "Home")" class="btn btn-primary btn-lg mt-4">Ir al Inicio</a>
+                <a asp-controller="Home" asp-action="Home" class="btn btn-primary btn-lg mt-4">Ir al Inicio</a>
             }
         </div>
     </div>
