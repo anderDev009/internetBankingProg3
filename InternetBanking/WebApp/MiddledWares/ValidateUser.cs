@@ -13,7 +13,7 @@ namespace WebApp.MiddledWares
 
         public AuthenticationResponse HasUser()
         {
-            AuthenticationResponse userViewModel = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("User");
+            AuthenticationResponse userViewModel = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
 
             if (userViewModel == null)
             {

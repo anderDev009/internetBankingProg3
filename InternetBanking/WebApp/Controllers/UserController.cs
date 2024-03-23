@@ -7,6 +7,8 @@ using InternetBanking.Core.Application.ViewModels.Card;
 using InternetBanking.Core.Application.ViewModels.Lean;
 using InternetBanking.Core.Application.ViewModels.BankAccount;
 using InternetBanking.Core.Application.Enums;
+using WebApp.MiddledWares;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
@@ -27,11 +29,14 @@ namespace WebApp.Controllers
             _bankAccountService = bankAccountService;
             _contextAccessor = contextAccessor;
         }
+
+        [ServiceFilter(typeof(LoginAuthorize))]
         public IActionResult Index()
         {
             return View(new LoginViewModel());
         }
 
+        [ServiceFilter(typeof(LoginAuthorize))]
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel login)
         {
@@ -63,12 +68,12 @@ namespace WebApp.Controllers
         public async Task<IActionResult> LogOut()
         {
             await _userService.SignOutAsync();
-            HttpContext.Session.Remove("user_session");
+            HttpContext.Session.Remove("user");
             return RedirectToRoute(new { controller = "User", action = "Index" });
         }
 
         //metodo activar
-
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Activate(string Id)
         {
             await _userService.ActiveUser(Id);
@@ -76,7 +81,7 @@ namespace WebApp.Controllers
         }
 
         //metodo desactivar
-
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Desactivated(string Id)
         {
             await _userService.DesactiveUser(Id);
@@ -111,9 +116,8 @@ namespace WebApp.Controllers
 
         }
 
-        
-
         //editar usuario
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Update(String Id)
         {
 
@@ -127,6 +131,7 @@ namespace WebApp.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> Update(SaveUserViewModel vm)
         {
@@ -151,12 +156,13 @@ namespace WebApp.Controllers
 
         }
         //crear Cuenta
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateAccount(String Id)
         {
             ViewBag.IdUser = Id;
             return View();
         }
-
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> CreateAccount(SaveBankAccountViewModel vm)
         {
@@ -169,6 +175,7 @@ namespace WebApp.Controllers
         }
 
         //Borrar cuenta de bank
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteBank (string Id)
         {
             await _bankAccountService.RemoveAsync(Id);
@@ -177,12 +184,14 @@ namespace WebApp.Controllers
 
 
         //crear tarjeta de credito
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateCard(String Id)
         {
             ViewBag.IdUser = Id;
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> CreateCard(SaveCardViewModel vm)
         {
@@ -194,6 +203,7 @@ namespace WebApp.Controllers
             return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
         //Borrar tarjeta de credito
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteCard(int Id)
         {
             await _cardService.RemoveAsync(Id);
@@ -201,12 +211,14 @@ namespace WebApp.Controllers
         }
 
         //Crear prestamo
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateLoan(String Id)
         {
             ViewBag.IdUser = Id;
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> CreateLoan(SaveLoanViewModel vm)
         {
@@ -220,11 +232,17 @@ namespace WebApp.Controllers
         }
 
         //Borrar prestamo
-
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteLoan(int Id)
         {
             await _loanService.RemoveAsync(Id);
             return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
+        }
+
+        //denegacion de acceso
+        public async Task<IActionResult> AccessDenied()
+        {
+            return View();
         }
 
     }

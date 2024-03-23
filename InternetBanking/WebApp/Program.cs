@@ -5,6 +5,7 @@ using InternetBanking.Infrastructure.Identity.Entities;
 using InternetBanking.Infrastructure.Identity.Seeds;
 using Microsoft.AspNetCore.Identity;
 using InternetBanking.Core.Application;
+using WebApp.MiddledWares;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSession();
 // Add services to the container.
@@ -19,8 +20,10 @@ builder.Services.AddIdentityInfrastructure(builder.Configuration);
 builder.Services.AddSharedInfrastructure(builder.Configuration);
 
 //Añadir sesiones
-
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+//dependencias de filtro
+builder.Services.AddTransient<ValidateUser, ValidateUser>();
+builder.Services.AddScoped<LoginAuthorize>();
 var app = builder.Build();
 
 //Metodo para correr los Seeds
