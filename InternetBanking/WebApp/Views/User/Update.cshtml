@@ -1,109 +1,229 @@
-﻿﻿@using InternetBanking.Core.Application.ViewModels;
+﻿@using InternetBanking.Core.Application.ViewModels;
 @using InternetBanking.Core.Application.ViewModels.Users;
+@using InternetBanking.Core.Application.ViewModels.Card;
+@using InternetBanking.Core.Application.ViewModels.BankAccount;
+@using InternetBanking.Core.Application.ViewModels.Lean;
 @model SaveUserViewModel;
-@{
 
+@{
     ViewData["Title"] = "Update Page";
 }
+
 <head>
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 </head>
+
 <body>
     <section class="vh-100 gradient-custom">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="col-lg-10">
                     <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                        <div class="card-body p-5 text-center">
+                        <div class="card-body p-5">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-md-5 mt-md-4 pb-5">
+                                        <h2 class="fw-bold mb-2 text-uppercase">Administrar Usuario</h2>
+                                        <p class="text-white-50 mb-5">Administra o añade productos</p>
 
-                            <div class="mb-md-5 mt-md-4 pb-5">
+                                        <form method="post" asp-controller="User" asp-action="Update">
 
-                                <form method="post"  asp-controller="User" asp-action="Update">
+                                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                            @{
+                                                bool error = Model.HasError ?? false;
+                                            }
+                                            @if (error)
+                                            {
+                                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                    <p>@Model.Error</p>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                </div>
+                                            }
+                                            <div class="form-outline form-white mb-4">
+                                                <input asp-for="FirstName" type="text" class="form-control form-control-lg" />
+                                                <label asp-for="FirstName" class="form-label">Nombre</label>
+                                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                            </div>
 
-                                    <h2 class="fw-bold mb-2 text-uppercase">Editar User</h2>
-                                    <p class="text-white-50 mb-5">Llena el siguiente form!</p>
+                                            <div class="form-outline form-white mb-4">
+                                                <input asp-for="LastName" type="text" class="form-control form-control-lg" />
+                                                <label asp-for="LastName" class="form-label">Apellido</label>
+                                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                            </div>
 
-                                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-                                    @{
-                                        bool error = Model.HasError ?? false;
-                                    }
-                                    @if (error)
-                                    {
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                            <p>@Model.Error</p>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                        </div>
-                                    }
-                                    <div class="form-outline form-white mb-4">
-                                        <input asp-for="FirstName" type="text" class="form-control form-control-lg" />
-                                        <label asp-for="FirstName" class="form-label">Nombre</label>
-                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                            <div class="form-outline form-white mb-4">
+                                                <input asp-for="CardIdentificantion" type="tel" class="form-control form-control-lg" />
+                                                <label asp-for="CardIdentificantion" class="form-label">Cedula</label>
+                                                <span asp-validation-for="CardIdentificantion" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="form-outline form-white mb-4">
+                                                <input asp-for="Email" type="text" class="form-control form-control-lg" />
+                                                <label asp-for="Email" class="form-label">Correo</label>
+                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="form-outline form-white mb-4">
+                                                <input asp-for="Username" type="text" class="form-control form-control-lg" />
+                                                <label asp-for="Username" class="form-label">Usuario</label>
+                                                <span asp-validation-for="Username" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-outline form-white mb-4">
+                                                <input asp-for="currentPassword" type="password" class="form-control form-control-lg" />
+                                                <label asp-for="currentPassword" class="form-label">contraseña actual</label>
+                                                <span asp-validation-for="currentPassword" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="form-outline form-white mb-4">
+                                                <input asp-for="Password" type="password" class="form-control form-control-lg" />
+                                                <label asp-for="Password" class="form-label">Contraseña</label>
+                                                <span asp-validation-for="Password" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="form-outline form-white mb-4">
+                                                <input asp-for="ConfirmPassword" type="password" class="form-control form-control-lg" />
+                                                <label asp-for="ConfirmPassword" class="form-label">Confimar Contraseña</label>
+                                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                            </div>
+                                            @if (Model.TypeUser == "Client")
+                                            {
+                                                <div class="form-outline form-white mb-4">
+                                                    <label asp-for="InitialAmmount" class="form-label">Monto: </label>
+                                                    <input asp-for="InitialAmmount" class="form-control" />
+                                                    <span asp-validation-for="InitialAmmount" class="text-danger"></span>
+                                                </div>
+                                                <input type="hidden" asp-for="TypeUser" value="Cliente" />
+
+                                            }
+                                            else
+                                            {
+                                                <input type="hidden" asp-for="TypeUser" value="Administrador" />
+                                            }
+
+                                            <input type="hidden" asp-for="Id" />
+
+                                            <button class="btn btn-outline-light btn-lg px-5" type="submit">Registro</button>
+                                        </form>
                                     </div>
-
-                                    <div class="form-outline form-white mb-4">
-                                        <input asp-for="LastName" type="text" class="form-control form-control-lg" />
-                                        <label asp-for="LastName" class="form-label">Apellido</label>
-                                        <span asp-validation-for="LastName" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="form-outline form-white mb-4">
-                                        <input asp-for="CardIdentificantion" type="tel" class="form-control form-control-lg" />
-                                        <label asp-for="CardIdentificantion" class="form-label">Cedula</label>
-                                        <span asp-validation-for="CardIdentificantion" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="form-outline form-white mb-4">
-                                        <input asp-for="Email" type="text" class="form-control form-control-lg" />
-                                        <label asp-for="Email" class="form-label">Correo</label>
-                                        <span asp-validation-for="Email" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="form-outline form-white mb-4">
-                                        <input asp-for="Username" type="text" class="form-control form-control-lg" />
-                                        <label asp-for="Username" class="form-label">Usuario</label>
-                                        <span asp-validation-for="Username" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-outline form-white mb-4">
-                                        <input asp-for="currentPassword" type="password" class="form-control form-control-lg" />
-                                        <label asp-for="currentPassword" class="form-label">contraseña actual</label>
-                                        <span asp-validation-for="currentPassword" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="form-outline form-white mb-4">
-                                        <input asp-for="Password" type="password" class="form-control form-control-lg" />
-                                        <label asp-for="Password" class="form-label">Contraseña</label>
-                                        <span asp-validation-for="Password" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="form-outline form-white mb-4">
-                                        <input asp-for="ConfirmPassword" type="password" class="form-control form-control-lg" />
-                                        <label asp-for="ConfirmPassword" class="form-label">Confimar Contraseña</label>
-                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                    </div>
+                                </div>
+                                <div class="col-md-6">
                                     @if (Model.TypeUser == "Client")
                                     {
-                                        <div class="form-outline form-white mb-4">
-                                            <label asp-for="InitialAmmount" class="form-label">Monto: </label>
-                                            <input asp-for="InitialAmmount" class="form-control" />
-                                            <span asp-validation-for="InitialAmmount" class="text-danger"></span>
+                                        <div class="mb-md-5 mt-md-4 pb-5">
+                                            <h4 class="fw-bold mb-4 text-white">Mis Cuentas</h4>
+                                            <a asp-controller="User" asp-action="CreateAccount" asp-route-Id="@Model.Id" class="btn btn-outline-light btn-lg px-5 mb-4 rounded-pill">
+                                                <i class="bi bi-plus-circle me-2"></i> Agregar Cuenta
+                                            </a>
+
+                                            @if (ViewBag.AccountList != null)
+                                            {
+                                                <div class="table-responsive">
+                                                    <table class="table table-dark table-hover">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>Saldo</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (BankAccountViewModel account in ViewBag.AccountList)
+                                                            {
+                                                                <tr>
+                                                                    <td>@account.Code</td>
+                                                                    <td>$@account.Balance</td>
+                                                                    <td>
+                                                                        <a asp-controller="User" asp-action="DeleteBank" asp-route-Id="@account.Code" class="btn btn-danger btn-sm rounded-pill">
+                                                                            <i class="bi bi-trash"></i> Eliminar
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
                                         </div>
-                                        <input type="hidden" asp-for="TypeUser" value="Cliente" />
+                                        <div class="mb-md-5 mt-md-4 pb-5">
+                                            <h3 class="fw-bold mb-4 text-uppercase text-white">Mis Tarjetas</h3>
+                                            <a asp-controller="User" asp-action="CreateCard" asp-route-Id="@Model.Id" class="btn btn-outline-light btn-lg px-5 mb-4 rounded-pill">
+                                                <i class="bi bi-plus-circle me-2"></i> Agregar Tarjeta
+                                            </a>
 
+                                            @if (ViewBag.CardList != null)
+                                            {
+                                                <div class="table-responsive">
+                                                    <table class="table table-dark table-hover">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>Tipo</th>
+                                                                <th>Límite</th>
+                                                                <th>Disponible</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (CardViewModel card in ViewBag.CardList)
+                                                            {
+                                                                <tr>
+                                                                    <td>@card.Id</td>
+                                                                    <td><span class="badge bg-primary rounded-pill">Crédito</span></td>
+                                                                    <td>$@card.Limit</td>
+                                                                    <td>$@card.AmountAvailable</td>
+                                                                    <td>
+                                                                        <a asp-controller="User" asp-action="DeleteCard" asp-route-Id="@card.Id" class="btn btn-danger btn-sm rounded-pill">
+                                                                            <i class="bi bi-trash"></i> Eliminar
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
+                                        </div>
+
+                                        //seccion de prestamos
+                                        <div class="mb-md-5 mt-md-4 pb-5">
+                                            <h3 class="fw-bold mb-4 text-uppercase text-white">Mis Préstamos</h3>
+                                            <a asp-controller="User" asp-action="CreateLoan" asp-route-Id="@Model.Id" class="btn btn-outline-light btn-lg px-5 mb-4 rounded-pill">
+                                                <i class="bi bi-plus-circle me-2"></i> Solicitar Préstamo
+                                            </a>
+
+                                            @if (ViewBag.LoanList != null)
+                                            {
+                                                <div class="table-responsive">
+                                                    <table class="table table-dark table-hover">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>Monto</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (LoanViewModel loan in ViewBag.LoanList)
+                                                            {
+                                                                <tr>
+                                                                    <td>@loan.Id</td>
+                                                                    <td>$@loan.LoanUser</td>
+                                                                    <td>
+                                                                        <a asp-controller="User" asp-action="DeleteLoan" asp-route-Id="@loan.Id" class="btn btn-danger btn-sm rounded-pill">
+                                                                            <i class="bi bi-trash"></i> Eliminar
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
+                                        </div>
                                     }
-                                    else
-                                    {
-                                        <input type="hidden" asp-for="TypeUser" value="Administrador" />
-                                    }
-
-                                    <input type="hidden" asp-for="Id" />
-
-                                    <button class="btn btn-outline-light btn-lg px-5" type="submit">Registro</button>
-                                </form>
+                                </div>
                             </div>
-
-                            
-
                         </div>
                     </div>
                 </div>
