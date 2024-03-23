@@ -10,5 +10,6 @@ namespace InternetBanking.Core.Application.Interfaces.Repositories
         Task<T> SaveAsync(T entity);
         Task<T> UpdateAsync(T entity, int id);
         Task RemoveAsync(T entity);
+        Task<int> CountAsync();
     }
 }

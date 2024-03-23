@@ -22,7 +22,7 @@ namespace InternetBanking.Infrastructure.Identity.Seeds
 
             //Validar si el default user existe
             if (userManager.Users.All(u => u.Id != defaultUserAdmin.Id))
-            {
+            {   
                 //Validar si hay algun user con el mismo correo
                 var user = await userManager.FindByEmailAsync(defaultUserAdmin.Email);
                 if (user == null)

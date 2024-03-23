@@ -17,6 +17,12 @@ namespace InternetBanking.Core.Application.Services
             _repository = repository;
             _mapper = mapper;
         }
+
+        public async Task<int> CountAsync()
+        {
+            return await _repository.CountAsync();
+        }
+
         public virtual async Task<List<ViewModel>> GetAllAsync()
         {
             var entities = await _repository.GetAllAsync();
@@ -41,7 +47,7 @@ namespace InternetBanking.Core.Application.Services
             return _mapper.Map<SaveViewModel>(entity);
         }
 
-        public async Task<SaveViewModel> UpdateAsync(SaveViewModel vm, int id)
+        public virtual  async Task<SaveViewModel> UpdateAsync(SaveViewModel vm, int id)
         {
             Entity entity = _mapper.Map<Entity>(vm);
             Entity t = await _repository.UpdateAsync(entity, id);

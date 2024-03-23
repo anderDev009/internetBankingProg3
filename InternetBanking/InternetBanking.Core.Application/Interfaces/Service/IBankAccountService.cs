@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace InternetBanking.Core.Application.Interfaces.Service
 {
-    public interface IBankAccountService : IBaseService<IBankAccountService,
+    public interface IBankAccountService : IBaseService<BankAccountViewModel,
                                                         SaveBankAccountViewModel
                                                        ,Account>
     {
         SaveBankAccountViewModel CreateNewBank(string IdUser, decimal InitialAmmount);
         Task UserSumAmmount(string IdUser, decimal Ammount);
         Task<Account> GetUserMainBank(string IdUser);
-    }
+        Task<List<BankAccountViewModel>> GetAccountsByIdUserAsync(string id);
+        Task<bool> AccountExistsAsync(string id);
+   }
 }

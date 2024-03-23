@@ -4,6 +4,7 @@ using InternetBanking.Core.Application.ViewModels.Users;
 using InternetBanking.Core.Application.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using InternetBanking.Core.Application.Enums;
 
 namespace WebApp.Controllers
 {
@@ -31,7 +32,12 @@ namespace WebApp.Controllers
             if(response != null && response.HasError != true)
             {
                 HttpContext.Session.Set<AuthenticationResponse>("user", response);
-                return RedirectToRoute(new { controller = "Home", action = "Index" });
+                if (response.Roles.Contains(Roles.Administrator.ToString()))
+                {
+                    return RedirectToRoute(new { controller = "Home", action = "Index" });
+                }
+                return RedirectToRoute(new { controller = "Home", action = "IndexClient" });
+
             }
             else
             {

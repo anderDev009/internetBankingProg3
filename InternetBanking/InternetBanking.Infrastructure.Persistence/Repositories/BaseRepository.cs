@@ -13,6 +13,11 @@ namespace InternetBanking.Infrastructure.Persistence.Repositories
             _ctx = ctx;
         }
 
+        public async Task<int> CountAsync()
+        {
+            return await _ctx.Set<T>().CountAsync();
+        }
+
         public virtual async Task<List<T>> GetAllAsync()
         {
             return await _ctx.Set<T>().ToListAsync();

@@ -8,7 +8,7 @@ namespace InternetBanking.Core.Application.ViewModels.BankAccount
     public class BankAccountViewModel
     {
         public string Code { get; set; }
-        public int IdUser { get; set; }
+        public string IdUser { get; set; }
         public decimal InitialAmmount { get; set; }
         public decimal Balance { get; set; }
         public bool IsMainAccount { get; set; }
