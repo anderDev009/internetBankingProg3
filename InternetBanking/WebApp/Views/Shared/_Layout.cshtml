@@ -33,7 +33,7 @@
                         @if (user.Roles.Contains(Roles.Client.ToString()))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="IndexClient">Home</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Home">Home</a>
                             </li>
                           
                             <li class="nav-item">
@@ -42,7 +42,7 @@
                                     </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="IndexClient">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CashAdvance" asp-action="Index">
                                     Avance de efectivo
                                 </a>
                             </li>
@@ -59,7 +59,8 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" asp-controller="Pay" asp-action="Express">Pagos express</a></li>
                                         <li><a class="dropdown-item" asp-controller="Pay" asp-action="Card">Tarjeta de credito</a></li>
-                                        <li><a class="dropdown-item" href="#">Beneficiarios</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Pay" asp-action="Loan">Prestamos</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Pay" asp-action="Beneficiary">Beneficiarios</a></li>
                                     </ul>
                                 </div>
                             </li>

@@ -3,6 +3,7 @@ using InternetBanking.Core.Application.Helpers;
 using InternetBanking.Core.Application.Interfaces.Service;
 using InternetBanking.Core.Application.ViewModels.PayCard;
 using InternetBanking.Core.Application.ViewModels.PayExpress;
+using InternetBanking.Core.Application.ViewModels.PayLoan;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,19 +12,26 @@ namespace WebApp.Controllers
     [Authorize(Roles = "Client")]
     public class PayController : Controller
     {
-        private readonly IPayExpressService _payExpressService;
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly IBankAccountService _bankAccountService;
+        private readonly IPayExpressService _payExpressService;
+        private readonly IPayLoanService _payLoanServices;
         private readonly IPayCardService _payCardService;
+        private readonly IBankAccountService _bankAccountService;
         private readonly ICardService _cardService;
+        private readonly ILoanService _loanService;
+        private readonly IBeneficiaryService _beneficiaryService;
         public PayController(IPayExpressService payExpressService, IHttpContextAccessor contextAccessor,
-            IBankAccountService bankAccountService, ICardService cardAccountService, IPayCardService payCardService)
+            IBankAccountService bankAccountService, ICardService cardAccountService, IPayCardService payCardService,
+            IPayLoanService payLoanServices, ILoanService loanService, IBeneficiaryService beneficiaryService)
         {
-            _payExpressService = payExpressService;
             _contextAccessor = contextAccessor;
+            _payExpressService = payExpressService;
+            _payLoanServices = payLoanServices;
+            _payCardService = payCardService;
             _bankAccountService = bankAccountService;
             _cardService = cardAccountService;
-            _payCardService = payCardService;
+            _loanService = loanService;
+            _beneficiaryService = beneficiaryService;
         }
         public IActionResult Index()
         {
@@ -72,7 +80,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Card(SavePayCardViewModel vm)
         {
             if (ModelState["Amount"].Errors.Any() || ModelState["IdAccountPaid"].Errors.Any()
-                || ModelState["IdAccountPaid"].Errors.Any())
+                || ModelState["IdCard"].Errors.Any())
             {
                 return RedirectToRoute(new { controller = "Pay", action = "Card" });
             }
@@ -90,7 +98,71 @@ namespace WebApp.Controllers
 
         }
 
-        public async Task<IActionResult> Transfer()
+        //pagos loan
+        public async Task<IActionResult> Loan()
+        {
+            var user = _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+            var loans = await _loanService.GetAllAsync();
+            var banks = await _bankAccountService.GetAllAsync();
+            ViewBag.loans = loans.FindAll(a => a.IdUser == user.Id);
+            ViewBag.banks = banks.FindAll(a => a.IdUser == user.Id);
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Loan(SavePayLoanViewModel vm)
+        {
+            if (ModelState["Amount"].Errors.Any() || ModelState["IdAccountPaid"].Errors.Any()
+                || ModelState["IdLoan"].Errors.Any())
+            {
+                return RedirectToRoute(new { controller = "Pay", action = "Loan" });
+            }
+            try
+            {
+                await _payLoanServices.SaveAsync(vm);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return RedirectToRoute(new { controller = "Pay", action = "Loan" });
+            }
+
+            return RedirectToRoute(new { controller = "Pay", action = "Loan" });
+
+        }
+
+        //Pago beneficiario
+        public async Task<IActionResult> Beneficiary()
+        {
+            var user = _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+            var beneficiarys = await _beneficiaryService.GetBeneficiaryByIdUser(user.Id);
+            var accounts = await _bankAccountService.GetAccountsByIdUserAsync(user.Id);
+
+            ViewBag.Accounts = accounts;
+            ViewBag.beneficiarys = beneficiarys;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Beneficiary(SavePayExpressViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToRoute(new { controller = "Pay", action = "Beneficiary" });
+            }
+            try
+            {
+                await _payExpressService.SaveAsync(vm);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return RedirectToRoute(new { controller = "Pay", action = "Beneficiary" });
+            }
+
+            return RedirectToRoute(new { controller = "Pay", action = "Beneficiary" });
+
+        }
+
+         public async Task<IActionResult> Transfer()
         {
             var user = _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
             var accounts = await _bankAccountService.GetAccountsByIdUserAsync(user.Id);
