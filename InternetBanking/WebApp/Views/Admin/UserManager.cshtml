@@ -1,0 +1,172 @@
+﻿@using InternetBanking.Core.Application.Dtos.Account
+﻿@using InternetBanking.Core.Application.ViewModels.Users;
+@using InternetBanking.Core.Application.Helpers;
+@inject IHttpContextAccessor httpContextAccessor
+@model List<UserViewModel>;
+@{
+    ViewData["Title"] = "Login Page";
+    var User = httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<body class="" style="background-color:#FAFAFA;">
+    <div class="container mt-5">
+        <div class="row mb-3">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Lista de Usuarios</h2> 
+            </div>
+            <div class="col-3 offset-9">
+                <a asp-controller="User" asp-action="Register" class="btn btn-danger">Agregar nuevo Usuario</a>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Cedula</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Estatus</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        List<UserViewModel> List = ViewBag.ListClient as List<UserViewModel>;
+                    }
+                    @if(List != null)
+                    {
+                        @foreach (var listClient in List)
+                        {
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>@listClient.FirstName</td>
+                                <td>@listClient.LastName</td>
+                                <td>@listClient.CardIdentificantion</td>
+                                <td>@listClient.UserName</td>
+                                @if (listClient.IsVerified)
+                                {
+                                    <td>Activo</td>
+                                }
+                                else
+                                {
+                                    <td>Desactivado</td>
+
+                                }
+
+                                <td>
+                                    @if (listClient.IsVerified)
+                                    {
+                                        <button type="button" class="btn btn-outline-danger btn-desactivate"
+                                                data-userid="@listClient.Id" data-username="@listClient.UserName">
+                                            Desactivar
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="User" asp-action="Activate" asp-route-Id="@listClient.Id"
+                                           class="btn btn-outline-danger">Activar</a>
+                                    }
+                                    <a asp-controller="User" asp-action="Update" asp-route-Id="@listClient.Id"
+                                       class="btn btn-outline-success">Administrar</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <br />
+            <div class="col-12">
+                <h2 class="text-center mb-4">Lista de Admins</h2>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Cedula</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Estatus</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        List<UserViewModel> ListA = ViewBag.ListAdmin as List<UserViewModel>;
+                    }
+                    @if (ListA != null)
+                    {
+                        @foreach (var listClient in ListA)
+                        {
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>@listClient.FirstName</td>
+                                <td>@listClient.LastName</td>
+                                <td>@listClient.CardIdentificantion</td>
+                                <td>@listClient.UserName</td>
+                                @if (listClient.IsVerified)
+                                {
+                                    <td>Activo</td>
+                                }
+                                else
+                                {
+                                    <td>Desactivado</td>
+
+                                }
+
+                                @if(User.Id == listClient.Id)
+                                {
+                                    <td>No puede hacer cambios a su user</td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @if (listClient.IsVerified)
+                                        {
+                                            <button type="button" class="btn btn-outline-danger btn-desactivate"
+                                                    data-userid="@listClient.Id" data-username="@listClient.UserName">
+                                                Desactivar
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <a asp-controller="User" asp-action="Activate" asp-route-Id="@listClient.Id"
+                                               class="btn btn-outline-danger">Activar</a>
+                                        }
+                                        <a asp-controller="User" asp-action="Update" asp-route-Id="@listClient.Id"
+                                           class="btn btn-outline-success">Administrar</a>
+                                    </td>
+                                }
+                                
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    @section scripts {
+        <script>
+            $(document).ready(function () {
+                // Manejo del clic en el botón "Desactivar" o "Activar"
+                $('.btn-desactivate').click(function () {
+                    var userId = $(this).data('userid');
+                    var userName = $(this).data('username');
+
+                    // Muestra una ventana de confirmación
+                    if (confirm("¿Estás seguro de que deseas desactivar a " + userName + "?")) {
+                        // Si el usuario confirma, envía una solicitud al servidor para desactivar el usuario
+                        $.post('/User/Desactivated', { id: userId }, function (data) {
+                            // Maneja la respuesta del servidor (puede ser redirigir a otra página o actualizar la vista)
+                            // Por ejemplo, puedes recargar la página actual para reflejar el cambio
+                            location.reload();
+                        });
+                    }
+                });
+
+            });
+        </script>
+    }
+</body>

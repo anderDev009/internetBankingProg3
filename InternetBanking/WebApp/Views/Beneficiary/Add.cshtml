@@ -1,0 +1,16 @@
+﻿﻿@using InternetBanking.Core.Application.ViewModels;
+@using InternetBanking.Core.Application.ViewModels.Beneficiary;
+@model SaveBeneficiaryViewModel;
+
+
+<form asp-controller="Beneficiary" asp-action="Add" method="post">
+    <input type="text" class="form-control" name="AccountNumber" placeholder="Numero de cuenta  ">
+    <button class="btn btn-primary">Buscar</button>
+
+    @if (ViewBag.Error != null)
+    {
+        <span class="text-danger">
+            @ViewBag.Error
+        </span>
+    }
+</form>

@@ -1,0 +1,33 @@
+﻿﻿@using InternetBanking.Core.Application.ViewModels.Lean;
+@using InternetBanking.Core.Application.Helpers;
+@model SaveLoanViewModel
+@{
+    ViewData["Title"] = "Loan Page";
+}
+<div class="card bg-dark text-white" style="border-radius: 1rem;">
+    <div class="card-body p-5">
+        <h3 class="fw-bold mb-4 text-uppercase text-center">Agregar Tarjeta</h3>
+
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+        <form method="post" asp-controller="User" asp-action="CreateLoan">
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="form-outline form-white">
+                        <input asp-for="LoanUser" type="text" class="form-control form-control-lg" />
+                        <label asp-for="LoanUser" class="form-label">Monto del prestamo</label>
+                        <span asp-validation-for="LoanUser" class="text-danger"></span>
+                    </div>
+                </div>
+                @{
+                    string Iduser = ViewBag.IdUser;
+                }
+                <input type="hidden" asp-for="IdUser" value="@Iduser" />
+
+            <div class="text-center">
+                <button class="btn btn-outline-light btn-lg px-5" type="submit">realizar prestamo</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+﻿@using InternetBanking.Core.Application.ViewModels.Beneficiary;
+@model List<BeneficiaryViewModel>
+
+    <div class="container mt-5">
+        <div class="row mb-3">
+
+            <div class="col-3 offset-9">
+                <a asp-controller="Beneficiary" asp-action="Add" class="btn btn-danger">Agregar un beneficiario</a>
+            </div>
+                  
+            <div class="col-12">
+                <h2 class="text-center mb-4">Lista de beneficiarios</h2>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Numero de cuenta</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (@Model != null)
+                    {
+                        @foreach (var beneficiary in @Model)
+                        {
+                            <tr>
+                                <td>@beneficiary.Name</td>
+                                <td>@beneficiary.LastName</td>
+                                <td>@beneficiary.AccountNumber</td>
+                                <td>Id: @beneficiary.Id</td>
+                                <td><a asp-controller="Beneficiary" asp-action="Delete" asp-route-Id="@beneficiary.Id">
+                                    Remover
+                                </a></td>
+                            </tr>
+
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>

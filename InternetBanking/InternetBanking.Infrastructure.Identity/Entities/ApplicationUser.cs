@@ -4,9 +4,11 @@ namespace InternetBanking.Infrastructure.Identity.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public string Name { get; set; }
+        //Entidad de User con campos custom
+        public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string cedula {  get; set; }
-        public decimal? InitialAmount { get; set; }
+
+        // Campo custom para la Identificacion
+        public string CardIdentification { get; set; }
     }
 }
