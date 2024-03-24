@@ -53,7 +53,7 @@ namespace WebApp.Controllers
                 return RedirectToRoute(new { controller = "Pay", action = "Express" });
             }
 
-            return RedirectToRoute(new { controller = "Pay", action = "Express" });
+            return RedirectToRoute(new { controller = "Home", action = "Home" });
 
         }
     }
