@@ -130,15 +130,21 @@ namespace WebApp.Controllers
             var banks = await _bankAccountService.GetAllAsync();
             ViewBag.loans = loans.FindAll(a => a.IdUser == user.Id);
             ViewBag.banks = banks.FindAll(a => a.IdUser == user.Id);
+            ViewBag.Error = TempData["Error"] as string;
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Loan(SavePayLoanViewModel vm)
-        {
+            {
             if (ModelState["Amount"].Errors.Any() || ModelState["IdAccountPaid"].Errors.Any()
                 || ModelState["IdLoan"].Errors.Any())
             {
-                return RedirectToRoute(new { controller = "Pay", action = "Loan" });
+                var user = _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+                var loans = await _loanService.GetAllAsync();
+                var banks = await _bankAccountService.GetAllAsync();
+                ViewBag.loans = loans.FindAll(a => a.IdUser == user.Id);
+                ViewBag.banks = banks.FindAll(a => a.IdUser == user.Id);
+                return View(vm);
             }
             try
             {
@@ -146,7 +152,10 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Error = ex.Message;
+                if (!(ex is AutoMapper.AutoMapperMappingException))
+                {
+                    TempData["Error"] = ex.Message;
+                }
                 return RedirectToRoute(new { controller = "Pay", action = "Loan" });
             }
 
