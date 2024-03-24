@@ -1,0 +1,37 @@
+﻿@using InternetBanking.Core.Application.ViewModels.PayExpress
+@model SavePayExpressViewModel
+
+
+
+
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            
+                            <h3>Pago a: @ViewBag.UserToPaid.FirstName @ViewBag.UserToPaid.LastName</h3>
+                            <p>Estas seguro que desea realizar este pago?</p>
+                            <form method="post" asp-controller="Pay" asp-action="Express">
+
+                            <input hidden asp-for="AccountNumber" type="text" class="form-control form-control-lg" />
+                            <input hidden asp-for="Amount" class="form-control form-control-lg" />
+                            <input hidden asp-for="IdAccountPaid" class="form-control form-control-lg" />
+                            <input hidden asp-for="Id" />
+                            <button class="btn btn-primary">Aceptar</button>
+                            <a class="btn btn-secondary" asp-controller="Home" asp-action="Home">Cancelar</a>
+                            </form>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

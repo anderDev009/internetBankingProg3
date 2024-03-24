@@ -11,5 +11,11 @@ namespace InternetBanking.Infrastructure.Persistence.Repositories
         {
             _ctx = ctx;
         }
+
+        public override Task<CardPay> SaveAsync(CardPay entity)
+        {
+            entity.Date = DateTime.Now;
+            return base.SaveAsync(entity);
+        }
     }
 }

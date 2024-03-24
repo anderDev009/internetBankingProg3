@@ -34,7 +34,7 @@ namespace InternetBanking.Infrastructure.Persistence.Repositories
 
         public async Task<int> GetTransactionsTodayAsync()
         {
-            return await _ctx.Set<PayExpress>().Where(p => p.Date == DateTime.Now.Date).CountAsync();
+            return await _ctx.Set<PayExpress>().Where(p => p.Date.Date == DateTime.Now.Date).CountAsync();
         }
     }
 }

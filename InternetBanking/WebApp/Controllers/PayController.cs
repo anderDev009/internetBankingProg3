@@ -20,9 +20,11 @@ namespace WebApp.Controllers
         private readonly ICardService _cardService;
         private readonly ILoanService _loanService;
         private readonly IBeneficiaryService _beneficiaryService;
+        private readonly IUserServices _userServices;
         public PayController(IPayExpressService payExpressService, IHttpContextAccessor contextAccessor,
             IBankAccountService bankAccountService, ICardService cardAccountService, IPayCardService payCardService,
-            IPayLoanService payLoanServices, ILoanService loanService, IBeneficiaryService beneficiaryService)
+            IPayLoanService payLoanServices, ILoanService loanService, IBeneficiaryService beneficiaryService,
+            IUserServices userServices)
         {
             _contextAccessor = contextAccessor;
             _payExpressService = payExpressService;
@@ -32,6 +34,7 @@ namespace WebApp.Controllers
             _cardService = cardAccountService;
             _loanService = loanService;
             _beneficiaryService = beneficiaryService;
+            _userServices = userServices;
         }
         public IActionResult Index()
         {
@@ -43,8 +46,28 @@ namespace WebApp.Controllers
             var user =  _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
             var accounts = await _bankAccountService.GetAccountsByIdUserAsync(user.Id);
             ViewBag.Accounts = accounts;
-            return View();
-        }   
+            return View("Express");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmExpress(SavePayExpressViewModel vm)
+        {
+            var accountClientExist = await _bankAccountService.AccountExistsAsync(vm.AccountNumber);
+            if (!accountClientExist)
+            {
+                ViewBag.Error = "Esta cuenta no existe";
+                return await Express();
+            }
+            var account = await _bankAccountService.GetByIdAsync(int.Parse(vm.IdAccountPaid));
+            if(account.Balance < vm.Amount)
+            {
+                ViewBag.Error = "No dispone del balance suficiente";
+                return await Express();
+            }
+            var accountClient = await _bankAccountService.GetByIdAsync(int.Parse(vm.AccountNumber));
+            ViewBag.UserToPaid = await _userServices.GetByIdUser(accountClient.IdUser);
+            return View("ConfirmExpress",vm);
+        }
         [HttpPost]
         public async Task<IActionResult> Express(SavePayExpressViewModel vm)
         {
@@ -59,10 +82,10 @@ namespace WebApp.Controllers
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                return RedirectToRoute(new { controller = "Pay", action = "Express" });
+                return await Express();
             }
 
-            return RedirectToRoute(new { controller = "Pay", action = "Express" });
+            return View("Success");
 
         }
 
@@ -146,7 +169,7 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToRoute(new { controller = "Pay", action = "Beneficiary" });
+                return await Beneficiary();
             }
             try
             {
@@ -155,7 +178,7 @@ namespace WebApp.Controllers
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                return RedirectToRoute(new { controller = "Pay", action = "Beneficiary" });
+                return await Beneficiary() ;
             }
 
             return RedirectToRoute(new { controller = "Pay", action = "Beneficiary" });
@@ -176,13 +199,13 @@ namespace WebApp.Controllers
             if(!ModelState.IsValid)
             {
                 ViewBag.Error = "Campos invalidos";
-                return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
+                return await Transfer();
             }
             //comprobamos que no sea a la misma cuenta
             if (vm.AccountNumber == vm.IdAccountPaid)
             {
                 ViewBag.Error = "No puedes transferir dinero a la misma cuenta.";
-                return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
+                return await Transfer();
             }
             try
             {
@@ -191,11 +214,10 @@ namespace WebApp.Controllers
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
+                return await Transfer();
             }
-            ViewBag.Success = "Transferencia completada";
-            return RedirectToRoute(new { controller = "Pay", action = "Transfer" });
+            return View("Success");
         }
-            
+
     }
 }

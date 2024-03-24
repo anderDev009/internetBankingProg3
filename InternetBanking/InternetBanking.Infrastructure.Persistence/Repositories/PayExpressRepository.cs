@@ -13,6 +13,10 @@ namespace InternetBanking.Infrastructure.Persistence.Repositories
         {
             _ctx = ctx;
         }
-
+        public override Task<PayExpress> SaveAsync(PayExpress entity)
+        {
+            entity.Date = DateTime.Now;
+            return base.SaveAsync(entity);
+        }
     }
 }
