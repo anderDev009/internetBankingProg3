@@ -148,8 +148,15 @@ namespace WebApp.Controllers
             }
             else
             {
+                var ListC = await _cardService.GetAllAsync();
+                var ListL = await _loanService.GetAllAsync();
+                var ListA = await _bankAccountService.GetAllAsync();
+                ViewBag.CardList = ListC.FindAll(u => u.IdUser == response.Id).ToList();
+                ViewBag.LoanList = ListL.FindAll(u => u.IdUser == response.Id).ToList();
+                ViewBag.AccountList = ListA.FindAll(a => a.IdUser == response.Id).ToList();
                 vm.HasError = response.HasError;
                 vm.Error = response.Error;
+                vm.TypeUser = response.TypeUser;
                 return View(vm);
 
             }

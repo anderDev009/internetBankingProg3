@@ -86,7 +86,7 @@
                                                 <label asp-for="ConfirmPassword" class="form-label">Confimar Contraseña</label>
                                                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                             </div>
-                                            @if (Model.TypeUser == "Client")
+                                            @if (Model.TypeUser == "Client" || Model.TypeUser == "Cliente")
                                             {
                                                 <div class="form-outline form-white mb-4">
                                                     <label asp-for="InitialAmmount" class="form-label">Monto: </label>
@@ -108,7 +108,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    @if (Model.TypeUser == "Client")
+                                    @if (Model.TypeUser == "Client" || Model.TypeUser == "Cliente")
                                     {
                                         <div class="mb-md-5 mt-md-4 pb-5">
                                             <h4 class="fw-bold mb-4 text-white">Mis Cuentas</h4>
