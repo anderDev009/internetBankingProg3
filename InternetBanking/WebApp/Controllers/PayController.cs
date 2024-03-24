@@ -4,6 +4,7 @@ using InternetBanking.Core.Application.Interfaces.Service;
 using InternetBanking.Core.Application.ViewModels.PayCard;
 using InternetBanking.Core.Application.ViewModels.PayExpress;
 using InternetBanking.Core.Application.ViewModels.PayLoan;
+using InternetBanking.Core.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -169,7 +170,13 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return await Beneficiary();
+                var user = _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
+                var beneficiarys = await _beneficiaryService.GetBeneficiaryByIdUser(user.Id);
+                var accounts = await _bankAccountService.GetAccountsByIdUserAsync(user.Id);
+
+                ViewBag.Accounts = accounts;
+                ViewBag.beneficiarys = beneficiarys;
+                return View("Beneficiary", vm);
             }
             try
             {
@@ -185,7 +192,25 @@ namespace WebApp.Controllers
 
         }
 
-         public async Task<IActionResult> Transfer()
+        [HttpPost]
+        public async Task<IActionResult> ConfirmBeneficiary(SavePayExpressViewModel vm)
+        {
+            var accountClientExist = await _bankAccountService.AccountExistsAsync(vm.AccountNumber);
+            if (!accountClientExist)
+            {
+                ViewBag.Error = "Esta cuenta no existe";
+            }
+            var account = await _bankAccountService.GetByIdAsync(int.Parse(vm.IdAccountPaid));
+            if (vm.Amount > account.Balance)
+            {
+                ViewBag.Error = "No dispone del balance suficiente";
+            }
+            var accountClient = await _bankAccountService.GetByIdAsync(int.Parse(vm.AccountNumber));
+            ViewBag.UserToPaid = await _userServices.GetByIdUser(accountClient.IdUser);
+            return View("ConfirmBeneficiary", vm);
+        }
+
+        public async Task<IActionResult> Transfer()
         {
             var user = _contextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
             var accounts = await _bankAccountService.GetAccountsByIdUserAsync(user.Id);
