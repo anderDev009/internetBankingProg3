@@ -45,7 +45,23 @@ namespace InternetBanking.Core.Application.Services
             }
             if (vm.Amount > loan.BalanceLoan)
             {
-                vm.Amount = (decimal)loan.BalanceLoan;
+                //resta lo que tomo de la cuenta
+                 var BankMoney = (decimal)account.Balance - vm.Amount;
+
+                var amontRest = vm.Amount - (decimal)loan.BalanceLoan;
+
+                //actualizando el balance de la cuenta sumando lo que le quedo + el restante de pagar
+                //esto solo pasa si el monto que pago es mayor a lo que paga
+                account.Balance = BankMoney + amontRest;
+                //suma el monto que no debe mas el que pago
+                decimal m = 0;
+                loan.BalanceLoan = m;
+                //actualizando base de datos
+                await _accountService.UpdateAsync(account, int.Parse(account.Code));
+                await _loanService.UpdateAsync(loan, loan.Id);
+                return await base.SaveAsync(vm);
+
+               /* vm.Amount = (decimal)loan.BalanceLoan;*/
             }
             //restamos el balance y actualizamos la cuenta del usuario y luego registramos
             //el pago

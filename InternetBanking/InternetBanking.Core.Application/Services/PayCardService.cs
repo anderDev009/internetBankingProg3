@@ -40,7 +40,8 @@ namespace InternetBanking.Core.Application.Services
                 throw new Exception("Este monto supera el limite disponible");
             }
             account.Balance += vm.Amount;
-            card.AmountAvailable -= vm.Amount;
+            var impuesto = vm.Amount * 0.0625m;
+            card.AmountAvailable -= (vm.Amount + impuesto);
             //actualizando la tarjeta y la cuenta
             await _bankAccountService.UpdateAsync(account, int.Parse(account.Code));
             await _cardService.UpdateAsync(card, card.Id);

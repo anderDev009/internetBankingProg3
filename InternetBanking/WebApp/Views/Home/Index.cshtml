@@ -1,14 +1,64 @@
 ﻿@using InternetBanking.Core.Application.ViewModels.Dashboard
 @model DashboardViewModel
+
 @{
     ViewData["Title"] = "Admin dashboard";
 }
 
-<div class="text-center">
-    <h3 class="display-4">Transacciones de hoy: @Model.TransactionsToday </h3>
-    <h3 class="display-4">Total de transacciones: @Model.Transactions</h3>
-    <h3 class="display-4">Pagos de hoy: @Model.Pays</h3>
-    <h3 class="display-4">Total de pagos: @Model.PaysToday</h3>
-    <h3 class="display-4">Usuarios activos: @Model.ActiveUsers</h3>
-    <h3 class="display-4">Usuarios desactivados: @Model.DisabledUsers</h3>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h1 class="text-center mb-5">Dashboard de admin</h1>
+            <div class="row">
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card bg-primary text-white h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Transacciones de hoy</h5>
+                            <p class="card-text display-4">@Model.TransactionsToday</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card bg-success text-white h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Total de transacciones</h5>
+                            <p class="card-text display-4">@Model.Transactions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card bg-warning text-white h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Pagos de hoy</h5>
+                            <p class="card-text display-4">@Model.Pays</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card bg-danger text-white h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Total de pagos</h5>
+                            <p class="card-text display-4">@Model.PaysToday</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card bg-info text-white h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Usuarios activos</h5>
+                            <p class="card-text display-4">@Model.ActiveUsers</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card bg-secondary text-white h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Usuarios desactivados</h5>
+                            <p class="card-text display-4">@Model.DisabledUsers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
