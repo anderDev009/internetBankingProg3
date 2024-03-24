@@ -120,7 +120,7 @@ namespace WebApp.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Update(String Id)
         {
-
+            ViewBag.Error = TempData["Error"] as string;
             SaveUserViewModel vm = await _userService.GetByIdUser(Id);
             var ListC = await _cardService.GetAllAsync();
             var ListL = await _loanService.GetAllAsync();
@@ -148,8 +148,15 @@ namespace WebApp.Controllers
             }
             else
             {
+                var ListC = await _cardService.GetAllAsync();
+                var ListL = await _loanService.GetAllAsync();
+                var ListA = await _bankAccountService.GetAllAsync();
+                ViewBag.CardList = ListC.FindAll(u => u.IdUser == response.Id).ToList();
+                ViewBag.LoanList = ListL.FindAll(u => u.IdUser == response.Id).ToList();
+                ViewBag.AccountList = ListA.FindAll(a => a.IdUser == response.Id).ToList();
                 vm.HasError = response.HasError;
                 vm.Error = response.Error;
+                vm.TypeUser = response.TypeUser;
                 return View(vm);
 
             }
@@ -178,7 +185,17 @@ namespace WebApp.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteBank (string Id)
         {
-            await _bankAccountService.RemoveAsync(Id);
+            try
+            {
+                await _bankAccountService.RemoveAsync(Id);
+
+            }catch (Exception ex)
+            {
+                var userId = await _bankAccountService.GetByIdAsync(int.Parse(Id));
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Update", new { Id = userId.IdUser });
+
+            }
             return RedirectToRoute(new { controller = "Admin", action = "UserManager" });
         }
 

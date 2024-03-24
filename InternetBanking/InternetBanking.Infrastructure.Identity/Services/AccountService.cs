@@ -248,7 +248,7 @@ namespace InternetBanking.Infrastructure.Identity.Services
                 else
                 {
                     //si ocurre un error
-                    vm.HasError = false;
+                    vm.HasError = true;
                     vm.Error = "A ocurrido un error, por favor edite el usuario nuevamente";
                     return vm;
                 }

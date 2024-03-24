@@ -61,7 +61,7 @@ namespace InternetBanking.Core.Application.Services
                 throw new Exception("Cuenta invalida");
             }
             //comprobamos que la cuenta tenga el saldo disponible para depositar
-            if(account.Balance < (vm.Amount + (decimal)((double)vm.Amount * 0.0625)))
+            if (account.Balance < vm.Amount)
             {
                 throw new Exception("Saldo insuficiente");
             }
@@ -69,9 +69,22 @@ namespace InternetBanking.Core.Application.Services
             var quotePay = card.Limit - card.AmountAvailable;
             if (vm.Amount > quotePay)
             {
-                vm.Amount = (decimal)((double)quotePay * 0.0625);
+                //Dinero que le queda en la cuenta
+                var money = (decimal)((double)account.Balance) - (decimal)((double)vm.Amount);
+                //monto que le queda luego de pagar 
+                var amountPay = (decimal)((double)vm.Amount) - (decimal)((double)quotePay);
+                //actualizando el balance de la cuenta sumando lo que le quedo + el restante de pagar
+                //esto solo pasa si el monto que pago es mayor a lo que paga
+                account.Balance = (decimal)((double)money) + (decimal)((double)amountPay);
+                //suma el monto que no debe mas el que pago
+                card.AmountAvailable += quotePay;
+                //actualizando base de datos
+                await _bankAccountService.UpdateAsync(account, int.Parse(account.Code));
+                await _cardService.UpdateAsync(card, card.Id);
+                return await base.SaveAsync(vm);
+
+                /*vm.Amount = (decimal)((double)quotePay * 0.0625);*/
             }
-      
             //actualizando la cuenta de banco del usuario
             account.Balance -= vm.Amount;
             await _bankAccountService.UpdateAsync(account, int.Parse(account.Code));
